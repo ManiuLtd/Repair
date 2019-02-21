@@ -27,20 +27,20 @@ Vue.config.productionTinpmp = false;
 // axios.defaults.baseURL = 'http://localhost:8080/';
 // axios.defaults.baseURL = 'http://192.168.43.28:8080/';
 // axios.defaults.baseURL = 'http://app.zhongtongguanglian.com:8080/';
-axios.defaults.baseURL = 'http://www.haojunqian.cn:8080/';
-// document.addEventListener('deviceready', function () {
-new Vue({
-  el: '#app',
-  router,
-  components: {App},
-  template: '<App/>'
-});
-// document.addEventListener("jpush.receiveRegistrationId", function (event) {
-//   alert("receiveRegistrationId" + JSON.stringify(event));
-//   // $("#registrationId").html(event.registrationId);
-// }, false);
-// initiateUI();
-// }, false);
+// axios.defaults.baseURL = 'http://www.haojunqian.cn:8080/';
+document.addEventListener('deviceready', function () {
+  new Vue({
+    el: '#app',
+    router,
+    components: {App},
+    template: '<App/>'
+  });
+  document.addEventListener("jpush.receiveRegistrationId", function (event) {
+    alert("receiveRegistrationId" + JSON.stringify(event));
+    // $("#registrationId").html(event.registrationId);
+  }, false);
+  initiateUI();
+}, false);
 var getRegistrationID = function() {
   window.JPush.getRegistrationID(onGetRegistrationID);
 };
@@ -103,9 +103,9 @@ var initiateUI = function() {
     alert("init"+exception);
   }
 };
-//   document.addEventListener("jpush.openNotification", onOpenNotification, false);
-// document.addEventListener("jpush.receiveNotification", onReceiveNotification, false);
-// document.addEventListener("jpush.receiveMessage", onReceiveMessage, false);
+  document.addEventListener("jpush.openNotification", onOpenNotification, false);
+document.addEventListener("jpush.receiveNotification", onReceiveNotification, false);
+document.addEventListener("jpush.receiveMessage", onReceiveMessage, false);
 
 /* eslint-disable no-new */
 // 创建公共父级方法

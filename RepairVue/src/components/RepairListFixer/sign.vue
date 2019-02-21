@@ -74,8 +74,8 @@
     },
     created(){
       this.getSign();
-      QRScanner.destroy();
-      $("html").css("background","white");
+      // QRScanner.destroy();
+      // $("html").css("background","white");
 
     }
   }
