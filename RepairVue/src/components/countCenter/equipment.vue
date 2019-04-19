@@ -1,9 +1,9 @@
 <template>
   <div id="equip">
-    <div class="header" style="border-bottom: 1px solid gray">
-      <van-row type="flex" justify="space-between" style="height: 67px;background-color: darkgoldenrod;color: whitesmoke;font-size: 20px;font-weight: bold;line-height: 67px;letter-spacing:4px;">
+    <div>
+      <van-row type="flex" class="header" justify="space-between">
         <van-col span="4">
-          <router-link to="/">
+          <router-link to="/companyA">
             <van-icon name="arrow-left" size="1em" color="white"/>
           </router-link>
         </van-col>
@@ -13,7 +13,7 @@
     </div>
     <div v-for="(com,index) in equipments" :key="index">
       <router-link :to="{name:'count',params:{equipId:com.id}}">
-        <van-panel :title="com.name" :status="com.wy.name" style="text-align: left;padding-left: 1rem;">
+        <van-panel :title="com.name" :status="com.wy.name" style="text-align: left;padding-left: 1em;">
         </van-panel>
       </router-link>
     </div>

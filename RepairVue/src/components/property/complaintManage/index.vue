@@ -1,7 +1,16 @@
 <template>
   <div>
+    <van-row type="flex" class="header" justify="space-between">
+      <van-col span="4">
+        <router-link to="/index">
+          <van-icon name="arrow-left" size="1em" color="white"/>
+        </router-link>
+      </van-col>
+      <van-col span="8" offset="2">投诉管理</van-col>
+      <van-col span="6"></van-col>
+    </van-row>
     <el-tabs type="border-card" class="el-tabs">
-      <el-tab-pane label="投诉管理" class="el-tab-pane">
+      <!--<el-tab-pane label="投诉管理" class="el-tab-pane">-->
         <el-table
           ref="filterTable"
           :data="data.filter(data => !search || data.equipment.name.toLowerCase().includes(search.toLowerCase()))"
@@ -9,14 +18,16 @@
           <el-table-column
             prop="startTime"
             label="报修时间"
+            style="width: 6em"
+            show-overflow-tooltip
             sortable
-            width="110"
             column-key="date">
           </el-table-column>
           <el-table-column
+            style="width: 4em"
             prop="equipment.name"
             label="设备名称"
-            width="90">
+            >
           </el-table-column>
           <!--<el-table-column
             prop="equipment.name"
@@ -24,20 +35,22 @@
             :formatter="formatter">
           </el-table-column>-->
           <el-table-column
-            width="140"
+            width="135"
             align="right">
             <template slot="header" slot-scope="scope">
               <el-input
                 v-model="search"
                 size="mini"
+                style="padding: 0"
+                prefix-icon="el-icon-search"
                 placeholder="关键字搜索"/>
             </template>
             <template slot-scope="scope">
-              <router-link :to="{ name: 'repair', params: { repairId: scope.row.id }}">维修工单详情</router-link>;
+              <router-link :to="{ name: 'repair', params: { repairId: scope.row.id }}"><el-button size="mini" type="primary" class="input-group">维修工单详情</el-button></router-link>
             </template>
           </el-table-column>
         </el-table>
-      </el-tab-pane>
+      <!--</el-tab-pane>-->
     </el-tabs>
   </div>
 </template>
@@ -77,6 +90,7 @@
           )
           .then(res => {
             if (res.data.code === "1") {
+              console.log("维修工单", res);
               window.localStorage.setItem(
                 "actionLog",
                 JSON.stringify(res.data.token)

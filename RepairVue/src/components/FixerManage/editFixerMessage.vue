@@ -1,12 +1,12 @@
 <template>
-  <div id="editFixerM" style="background: whitesmoke;height:100vh;">
+  <div id="editFixerM">
     <van-row>
       <div @click="editFixer(fixer)" v-for="fixer in fixers">
 
         <van-col span="8" class="fixerPart">
-          <van-icon name="contact" color="white" size="2.5rem" style="font-weight: bold"/>
-          <p style="color: white">{{fixer.name}}</p>
-          <p style="color: white">工号：{{fixer.id}}</p>
+          <van-icon name="contact" color="black" size="2em" style="font-weight: bold"/>
+          <p style="color: black">{{fixer.name}}</p>
+          <p style="color: black">工号：{{fixer.id}}</p>
         </van-col>
       </div>
     </van-row>
@@ -47,14 +47,15 @@
 </script>
 <style scoped>
   .fixerPart{
-    width: 45%;
-    background-color: goldenrod;
+    width: 40%;
+    height: 2.8rem;
+    background-color: white;
     border-radius: 5px;
     margin-top: 10px;
     font-size: 16px;
     padding: 20px 15px;
-    color: #989898;
-    margin-left: 1.5rem;
+    color: black;
+    margin-left: 6%;
     display: block;
   }
 

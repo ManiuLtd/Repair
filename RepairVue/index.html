@@ -3,34 +3,56 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
-    <!--<meta http-equiv="Content-Security-Policy" content="default-src 'self' data: gap: https://ssl.gstatic.com 'unsafe-eval'; style-src 'self' 'unsafe-inline'; media-src *; img-src 'self' data: content:;font-src * data:;">-->
-    <!--<meta name="format-detection" content="telephone=no">-->
-    <!--<meta name="msapplication-tap-highlight" content="no">-->
-    <!--<meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">-->
+    <!--移动端适配方法：以下两种方法都是在index.html里设置，这样可以不用在每个界面里重复使用，减少代码重复。才会优雅-->
+    <!--第一种方法：-->
+    <!--代码原理-->
+    <!--这是阿里团队的高清方案布局代码，所谓高清方案就是利用rem的特性（我们知道默认情况下html的1rem = 16px），根据设备屏幕的DPR（设备像素比，又称DPPX，比如dpr=2时，表示1个CSS像素由4个物理像素点组成）根据设备DPR动态设置 html 的font-size为（50 * dpr)，同时调整页面的压缩比率（即：1/dpr），进而达到高清效果。-->
+    <!--有何优势-->
+    <!--引用简单，布局简便-->
+    <!--根据设备屏幕的DPR,自动设置最合适的高清缩放。-->
+    <!--保证了不同设备下视觉体验的一致性。（老方案是，屏幕越大元素越大；此方案是，屏幕越大，看的越多）-->
+    <!--有效解决移动端真实1px问题（这里的1px 是设备屏幕上的物理像素）-->
+    <!--如何使用-->
+    <!--此方案也是默认 1rem = 100px，所以你布局的时候，完全可以按照设计师给你的效果图写各种尺寸啦。注:不要手动设置viewport，该方案自动帮你设置）-->
+    <!--<script>!function(e){function t(a){if(i[a])return i[a].exports;var n=i[a]={exports:{},id:a,loaded:!1};return e[a].call(n.exports,n,n.exports,t),n.loaded=!0,n.exports}var i={};return t.m=e,t.c=i,t.p="",t(0)}([function(e,t){"use strict";Object.defineProperty(t,"__esModule",{value:!0});var i=window;t["default"]=i.flex=function(normal,e,t){var a=e||100,n=t||1,r=i.document,o=navigator.userAgent,d=o.match(/Android[\S\s]+AppleWebkit\/(\d{3})/i),l=o.match(/U3\/((\d+|\.){5,})/i),c=l&&parseInt(l[1].split(".").join(""),10)>=80,p=navigator.appVersion.match(/(iphone|ipad|ipod)/gi),s=i.devicePixelRatio||1;p||d&&d[1]>534||c||(s=1);var u=normal?1:1/s,m=r.querySelector('meta[name="viewport"]');m||(m=r.createElement("meta"),m.setAttribute("name","viewport"),r.head.appendChild(m)),m.setAttribute("content","width=device-width,user-scalable=no,initial-scale="+u+",maximum-scale="+u+",minimum-scale="+u),r.documentElement.style.fontSize=normal?"50px": a/2*s*n+"px"},e.exports=t["default"]}]);  flex(false, text/html100, 1);</script>-->
     <title>repairvue</title>
     <!--1.assets用来放置样式、静态图片，只要src下面的组件中用到的资源就放在assets中。-->
     <!--2.static用来放没有npm包的第三方插件，字体文件。-->
     <!--3.assets与components同级  components下的.vue引用静态文件时，相对路径为 ../assets/wapFront-->
-    <!--<link rel="stylesheet" href="static/bootstrap/dist/css/bootstrap.css">-->
-    <!--<script src="static/jquery/dist/jquery.js"></script>-->
-    <!--<script src="static/bootstrap/dist/js/bootstrap.js"></script>-->
+    <!--引入公共样式-->
+    <link rel="stylesheet" href="./src/assets/css/header.css" type=&quot;text/css&quot;>
     <script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
-    <!--<script src="http://echarts.baidu.com/build/dist/echarts.js"></script>-->
+    <!--<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>-->
+    <!--<script src="https://cdn.jsdelivr.net/npm/echarts/dist/echarts.min.js"></script>-->
+    <!--<script src="https://cdn.jsdelivr.net/npm/v-charts/lib/index.min.js"></script>-->
+    <!--<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/v-charts/lib/style.min.css">-->
+    <!--第二种方法：-->
+    <!--通过window.screen.width获取不同移动设备的理想视口宽度。-->
+    <!--规定基准值为750px(此值为iPhon6的设备像素)。-->
+    <!--(1) / (2) * 100即得到HTML元素的font-size。(乘于100是因为我们在前面将字体缩小了100倍，此时要乘回来)-->
+    <!--换算成公式即：设计稿尺寸 / 100 * (不同设备的理想视口宽度 / 基准值 * 100)-->
+    <script>
+
+         let idealViewWidth = window.screen.width;
+         console.log(idealViewWidth);
+         const BASICVALUE = 750;
+         document.documentElement.style.fontSize = (idealViewWidth / BASICVALUE) * 100 + 'px';
+
+    </script>
   </head>
-  <body>
+  <body style="background: white;">
     <div id="app">
 
     </div>
-    <script type="text/javascript" src="cordova.js"></script>
-    <!--<script src="https://cdn.bootcss.com/vue/2.6.4/vue.min.js"></script>-->
-    <!--<script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>-->
-    <!--<script src="https://cdn.bootcss.com/vue-router/3.0.2/vue-router.min.js"></script>-->
-    <!--<script src="https://cdn.bootcss.com/axios/0.19.0-beta.1/axios.min.js"></script>-->
-    <!--<script src="https://cdn.bootcss.com/element-ui/2.5.4/index.js"></script>-->
-    <!-- built files will be auto injected -->
     <!--注意这里运行的时候需要将document.addEventListener注释，因为在浏览器环境下是找不到cordova.js的也就不能监听到deviceready的事件，打包在真机上才能实现监听-->
     <!--<script type="text/javascript" src="cordova.js"></script>-->
 
   </body>
 </html>
 
+<!--笔记：-->
+  <!--1.父路由组件设置的样式在子路由组件中可用（类名相同的话）-->
+  <!--2.复用较多的样式最好另立一个css文件，放在里面，然后引入vue文件中。方便后期修改。使代码变得优雅-->
+  <!--3.console.log("设备查询",res);中间用逗号控制台的具体信息可正常显示，如果中间是+号，就有可能出现控制台只输出[object Object]的尴尬情况-->
+
+<!--在 webpack.base.conf.js文件里把entry:改了-->

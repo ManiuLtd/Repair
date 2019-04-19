@@ -1,52 +1,58 @@
 <template>
-  <div class="content">
-    <div style="margin-top:30px;padding:10px ;">
-      <div class="title">
-        <h2>物业子账号详情</h2>
+  <div id="childWy">
+    <van-row class="header" type="flex" justify="space-between" style="">
+      <van-col span="4">
+        <router-link to="/GenerateSubAccount">
+          <van-icon name="arrow-left" size="1em" color="white"/>
+        </router-link>
+      </van-col>
+      <van-col span="10" offset="2">子账号详情</van-col>
+      <van-col span="6"></van-col>
+    </van-row>
+    <div class="content">
+      <div style="">
+        <el-form ref="form">
+          <el-form-item label="用户名">
+            <el-input v-model="username" disabled="disabled"/>
+          </el-form-item>
+          <el-form-item label="密码">
+            <el-input  v-model="password" disabled="disabled"/>
+          </el-form-item>
+          <el-form-item label="名称">
+            <el-input v-model="name" disabled="disabled"/>
+          </el-form-item>
+          <el-form-item label="描述">
+            <el-input v-model="miaoshu" disabled="disabled"/>
+          </el-form-item>
+          <el-form-item label="是否正常">
+            <el-input  v-model="state[isEnable]" disabled="disabled"/>
+          </el-form-item>
+          <el-form-item label="联系电话">
+            <el-input  v-model="phone" disabled="disabled"/>
+          </el-form-item>
+          <el-form-item label="邮箱">
+            <el-input  v-model="email" disabled="disabled"/>
+          </el-form-item>
+          <el-form-item label="省份">
+            <el-input  v-model="province" disabled="disabled"/>
+          </el-form-item>
+          <el-form-item label="城市">
+            <el-input  v-model="city" disabled="disabled"/>
+          </el-form-item>
+          <el-form-item label="添加时间">
+            <el-input  v-model="addTime" disabled="disabled"/>
+          </el-form-item>
+          <el-form-item label="禁止时间">
+            <el-input  v-model="forbiddenTime" disabled="disabled"/>
+          </el-form-item>
+          <el-form-item label="物业">
+            <el-input  v-model="wy" disabled="disabled"/>
+          </el-form-item>
+        </el-form>
+        <!--<el-button type="primary" class="input-group btn-login" @click="add(data.id)">删除子账号</el-button>-->
       </div>
-      <el-form ref="form" label-width="80px">
-        <el-form-item label="用户名">
-          <el-input v-model="username" disabled="disabled"/>
-        </el-form-item>
-        <el-form-item label="密码">
-          <el-input  v-model="password" disabled="disabled"/>
-        </el-form-item>
-        <el-form-item label="名称">
-          <el-input v-model="name" disabled="disabled"/>
-        </el-form-item>
-        <el-form-item label="描述">
-          <el-input v-model="miaoshu" disabled="disabled"/>
-        </el-form-item>
-        <el-form-item label="是否正常">
-          <el-input  v-model="isEnable" disabled="disabled"/>
-        </el-form-item>
-        <el-form-item label="联系电话">
-          <el-input  v-model="phone" disabled="disabled"/>
-        </el-form-item>
-        <el-form-item label="邮箱">
-          <el-input  v-model="email" disabled="disabled"/>
-        </el-form-item>
-        <el-form-item label="省份">
-          <el-input  v-model="province" disabled="disabled"/>
-        </el-form-item>
-        <el-form-item label="城市">
-          <el-input  v-model="city" disabled="disabled"/>
-        </el-form-item>
-        <el-form-item label="头像">
-          <el-input  v-model="headPic" disabled="disabled"/>
-        </el-form-item>
-        <el-form-item label="添加时间">
-          <el-input  v-model="addTime" disabled="disabled"/>
-        </el-form-item>
-        <el-form-item label="禁止时间">
-          <el-input  v-model="forbiddenTime" disabled="disabled"/>
-        </el-form-item>
-        <el-form-item label="物业">
-          <el-input  v-model="wy" disabled="disabled"/>
-        </el-form-item>
-      </el-form>
-      <!--<el-button type="primary" class="input-group btn-login" @click="add(data.id)">删除子账号</el-button>-->
     </div>
+
   </div>
 </template>
 
@@ -69,7 +75,13 @@
         wy: '',
         message: "物业子账号信息数据",
         msg: false,
-        notnull: false
+        notnull: false,
+        state:[
+          '不可用',
+          '可用',
+          '被管理员禁用',
+          '免费使用',
+        ]
       };
     },
     created(){
@@ -93,6 +105,7 @@
             }
           )
           .then(res => {
+            console.log("子账号",res);
             if (res.data.code === "1") {
               window.localStorage.setItem(
                 "subAccount'",

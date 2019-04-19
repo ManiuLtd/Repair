@@ -1,6 +1,6 @@
 <template>
   <div id="checkH">
-    <div id="myChart" style="width: 100%;height:35rem;"></div>
+    <div id="myChart" style="width: 100%;height:7rem;"></div>
     <p>（x轴为巡检时间，y轴为巡检次数）</p>
 
   </div>
@@ -75,9 +75,15 @@
           tooltip: {},
           xAxis: {
             // data: ["衬衫", "羊毛衫", "雪纺衫", "裤子", "高跟鞋", "袜子"]
-            data: this.time
+            data: this.time,
+            axisLabel: {
+              // 可以设置为0强制显示所有标签
+              interval:0,
+              // 标签倾斜的角度
+              rotate:40
+            },
           },
-          yAxis: {},
+          yAxis: {minInterval : 1},
           series: [{
             name: '销量',
             type: 'bar',

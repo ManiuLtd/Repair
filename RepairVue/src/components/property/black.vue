@@ -1,0 +1,20 @@
+<template>
+    
+</template>
+
+<script>
+    export default {
+        name: "black",
+      data(){
+        this.$router.replace('/GenerateSubAccount');
+        return{
+
+        }
+
+      }
+    }
+</script>
+
+<style scoped>
+
+</style>

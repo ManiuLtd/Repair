@@ -2,13 +2,17 @@
   <div class="content">
 
 
-    <div class="companyCon">
+    <div class="companyCon" style="">
       <router-view></router-view>
     </div>
-    <van-tabbar v-model="active">
-      <van-tabbar-item icon="shop" @click="toCompany">首页</van-tabbar-item>
-      <van-tabbar-item icon="contact" dot @click="editBtn">个人</van-tabbar-item>
-    </van-tabbar>
+    <!--父元素要设置高度才能不遮挡上面-->
+    <div style="height: 3em;margin-top: 2em">
+      <van-tabbar v-model="active">
+        <van-tabbar-item icon="shop" @click="toCompany">首页</van-tabbar-item>
+        <van-tabbar-item icon="contact" @click="editBtn">个人</van-tabbar-item>
+      </van-tabbar>
+    </div>
+
   </div>
 
 
@@ -16,10 +20,9 @@
 
 <script>
   export default {
-    name: "Company",
     data(){
       return{
-        active: 0,
+        active:'',
         comDatax:''
       }
     },

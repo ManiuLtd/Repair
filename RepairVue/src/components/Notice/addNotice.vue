@@ -1,13 +1,13 @@
 <template>
   <div id="addN">
     <div class="header" style="border-bottom: 1px solid gray">
-      <van-row type="flex" justify="space-between" style="height: 5.5rem;background-color: darkgoldenrod;color: whitesmoke;font-size: 20px;font-weight: bold;line-height: 67px;letter-spacing:4px;">
+      <van-row type="flex" class="header" justify="space-between">
         <van-col span="4">
           <router-link to="/notice">
             <van-icon name="arrow-left" size="1em" color="white"/>
           </router-link>
         </van-col>
-        <van-col span="6" offset="2">添加公告</van-col>
+        <van-col span="8" offset="2">添加公告</van-col>
         <van-col span="6"></van-col>
       </van-row>
     </div>
@@ -33,6 +33,12 @@
     },
     methods:{
       sendNotice(){
+        const loading = this.$loading({
+          lock: true,
+          text: 'Loading',
+          spinner: 'el-icon-loading',
+          background: 'rgba(0, 0, 0, 0.7)'
+        });
         this.$http.post("/notice/addNotice",{
           "text":this.message
         },{
@@ -41,9 +47,18 @@
             'Content-Type': 'application/json'
           }
         }).then((res)=>{
+          loading.close();
+          if(res.data.code == 1) {
+
+            this.$toast.success('添加成功');
+            this.$router.go(-1);
+          }else {
+              this.$toast.success('添加失败');
+          }
           console.log("添加公告",res);
 
         }).catch((error)=>{
+          loading.close();
           console.log(error);
         })
       }

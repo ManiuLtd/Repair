@@ -1,35 +1,51 @@
 <!--合同详情-->
 <template>
-  <div class="content">
-    <div style="margin-top:30px;padding:10px ;">
-      <div class="title">
-        <h2>合同详情</h2>
+  <div id="withWy">
+    <van-row class="header" type="flex" justify="space-between" style="">
+      <van-col span="4">
+        <router-link to="/contract/index">
+          <van-icon name="arrow-left" size="1em" color="white"/>
+        </router-link>
+      </van-col>
+      <van-col span="8" offset="2">合同详情</van-col>
+      <van-col span="6"></van-col>
+    </van-row>
+    <div class="content">
+      <!--equipmentAdd-->
+      <div style="margin-top:0.3rem;">
+        <el-form ref="form" disabled="">
+          <el-form-item label="维保企业">
+            <el-input  v-model="wbqy"/>
+          </el-form-item>
+          <el-form-item label="合同内容">
+            <el-input  v-model="content"/>
+          </el-form-item>
+          <el-form-item label="开始日期">
+            <el-input  v-model="startDate" type="date"/>
+          </el-form-item>
+          <el-form-item label="结束日期">
+            <el-input  v-model="endDate" type="date"/>
+          </el-form-item>
+          <el-form-item label="负责人">
+            <el-input  v-model="fuzeren"/>
+          </el-form-item>
+          <!--<el-form-item label="付款方式">-->
+          <!--<el-input  v-model="fukuanfangshi"/>-->
+          <!--</el-form-item>-->
+          <el-form-item label="支付方式">
+            <el-input v-model="fukuanfangshi" style="">
+            </el-input>
+          </el-form-item>
+
+          <el-form-item label="付款时间">
+            <el-input  v-model="fukuanshijian" type="date"/>
+          </el-form-item>
+
+        </el-form>
       </div>
-      <el-form ref="form" label-width="80px">
-        <el-form-item label="维保企业">
-          <el-input  v-model="wbqy" disabled="disabled"/>
-        </el-form-item>
-        <el-form-item label="合同内容">
-          <el-input  v-model="content" disabled="disabled"/>
-        </el-form-item>
-        <el-form-item label="开始日期">
-          <el-input  v-model="startDate" disabled="disabled" type="date"/>
-        </el-form-item>
-        <el-form-item label="结束日期">
-          <el-input  v-model="endDate" disabled="disabled" type="date"/>
-        </el-form-item>
-        <el-form-item label="负责人">
-          <el-input  v-model="fuzeren" disabled="disabled"/>
-        </el-form-item>
-        <el-form-item label="付款方式">
-          <el-input  v-model="fukuanfangshi" disabled="disabled"/>
-        </el-form-item>
-        <el-form-item label="付款时间">
-          <el-input  v-model="fukuanshijian" disabled="disabled" type="date"/>
-        </el-form-item>
-      </el-form>
     </div>
   </div>
+
 </template>
 
 <script>
@@ -79,7 +95,7 @@
                 JSON.stringify(res.data.token)
               );
               this.data = res.data.data;
-              this.wbqy = this.data.wbqy.username;
+              this.wbqy = this.data.wbqy.name;
               this.content = this.data.content;
               this.startDate = this.data.startDate;
               this.endDate = this.data.endDate;

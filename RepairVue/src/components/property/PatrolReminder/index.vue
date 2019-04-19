@@ -1,38 +1,48 @@
 <template>
   <div>
-    <el-tabs type="border-card" class="el-tabs">
-      <el-tab-pane label="巡检工单管理" class="el-tab-pane">
+    <van-row class="header" type="flex" justify="space-between" style="">
+      <van-col span="4">
+        <router-link to="/index">
+          <van-icon name="arrow-left" size="1em" color="white"/>
+        </router-link>
+      </van-col>
+      <van-col span="10" offset="2">巡检工单管理</van-col>
+      <van-col span="6"></van-col>
+    </van-row>
+    <el-tabs type="card" class="el-tabs">
+      <!--<el-tab-pane label="巡检工单管理" class="el-tab-pane" :stretch="true">-->
         <!--物业对巡检工单信息的展现 -->
         <el-table
-          :data="data.filter(data => !search || data.creationTime.toLowerCase().includes(search.toLowerCase()))"
+          :data="data1.filter(data => !search || data.equipment.name.toLowerCase().includes(search.toLowerCase()))"
           style="width: 100%">
           <el-table-column
             label="设备名称"
-            width="90"
             prop="equipment.name">
           </el-table-column>
           <el-table-column
             label="维保企业"
-            width="90"
-            prop="wbqy.username">
+            prop="wbqy.name">
           </el-table-column>
           <el-table-column
             width="135"
-            align="right">
+            align="right"
+            prop="id">
             <template slot="header" slot-scope="scope">
               <el-input
                 v-model="search"
                 size="mini"
+                style="padding: 0"
+                prefix-icon="el-icon-search"
                 placeholder="关键字搜索"/>
             </template>
             <template slot-scope="scope">
               <router-link :to="{ name: 'PatrolReminderSelect', params: { xjgdId: scope.row.id }}">
-                <el-button size="mini" type="primary" icon="el-icon-edit" class="input-group">巡检工单查看</el-button>
+                <el-button size="mini" type="primary" class="input-group">巡检工单查看</el-button>
               </router-link>
             </template>
           </el-table-column>
         </el-table>
-      </el-tab-pane>
+      <!--</el-tab-pane>-->
     </el-tabs>
   </div>
 </template>
@@ -57,7 +67,7 @@
   export default {
     data() {
       return {
-        data:[],
+        data1:[],
         search: '',
         message: "巡检工单信息数据",
         msg: false,
@@ -69,8 +79,7 @@
     },
     methods: {
       select: function () {
-          this.$http
-            .post(
+          this.$http.post(
               "/polling/selectPollingLogByWY",
               {},
               {
@@ -89,7 +98,8 @@
                   "xjgd",
                   JSON.stringify(res.data.token)
                 );
-                this.data = res.data.data;
+                console.log("this is success", res);
+                this.data1 = res.data.data;
               } else {
                 this.$router.push({
                   path: "/"

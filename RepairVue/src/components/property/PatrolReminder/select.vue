@@ -1,51 +1,58 @@
 <template>
-  <div class="content">
-    <div style="margin-top:30px;padding:10px ;">
-      <div class="title">
-        <h2>确认巡检工单</h2>
+  <div id="selectList">
+    <van-row class="header" type="flex" justify="space-between" style="">
+      <van-col span="4">
+        <router-link to="/PatrolReminder/index">
+          <van-icon name="arrow-left" size="1em" color="white"/>
+        </router-link>
+      </van-col>
+      <van-col span="8" offset="2">确认巡检</van-col>
+      <van-col span="6"></van-col>
+    </van-row>
+    <div class="content">
+      <div style="">
+        <el-form ref="form">
+          <el-form-item label="设备名称">
+            <el-input v-model="name"/>
+          </el-form-item>
+          <el-form-item label="创建时间">
+            <el-input  v-model="creationTime"/>
+          </el-form-item>
+          <el-form-item label="完成时间">
+            <el-input  v-model="pollingTime"/>
+          </el-form-item>
+          <el-form-item label="巡检时间">
+            <el-input  v-model="pollingTime"/>
+          </el-form-item>
+          <el-form-item label="下次巡检时间">
+            <el-input  v-model="nextPollingTime"/>
+          </el-form-item>
+          <el-form-item label="巡检类型">
+            <el-input  v-model="type[PollingType-1]"/>
+          </el-form-item>
+          <el-form-item label="巡检照片">
+            <img :src="pollingEndPicUrls" alt="" width="100%">
+          </el-form-item>
+          <!--<el-form-item label="巡检结构照片">-->
+            <!--<el-input  v-model="pollingEndPicUrls"/>-->
+          <!--</el-form-item>-->
+          <el-form-item label="描述">
+            <el-input  v-model="pollingMsg"/>
+          </el-form-item>
+          <el-form-item label="维修工">
+            <el-input  v-model="wxg"/>
+          </el-form-item>
+          <el-form-item label="维保企业">
+            <el-input  v-model="wbqy"/>
+          </el-form-item>
+
+          <el-form-item>
+            <el-button type="primary" class="input-group btn-login" @click="edit(data.id)" v-html="button[wyAck==null ? 0 : wyAck==0? 0 : 1]" :disabled="wyAck==null ? false : wyAck==0? false : true"></el-button>
+          </el-form-item>
+        </el-form>
       </div>
-      <el-form ref="form" label-width="80px">
-        <el-form-item label="设备名称">
-          <el-input v-model="name"/>
-        </el-form-item>
-        <el-form-item label="创建时间">
-          <el-input  v-model="creationTime"/>
-        </el-form-item>
-        <el-form-item label="完成时间">
-          <el-input  v-model="pollingTime"/>
-        </el-form-item>
-        <el-form-item label="确认时间">
-          <el-input  v-model="WYAckTime	"/>
-        </el-form-item>
-        <el-form-item label="第一次巡检时间">
-          <el-input  v-model="firstPollingTime"/>
-        </el-form-item>
-        <el-form-item label="巡检类型">
-          <el-input  v-model="PollingType"/>
-        </el-form-item>
-        <el-form-item label="巡检工单照片">
-          <el-input  v-model="pollingPicUrls"/>
-        </el-form-item>
-        <el-form-item label="巡检结构照片">
-          <el-input  v-model="pollingEndPicUrls"/>
-        </el-form-item>
-        <el-form-item label="巡检结果描述">
-          <el-input  v-model="pollingMsg"/>
-        </el-form-item>
-        <el-form-item label="巡检维修工">
-          <el-input  v-model="wxg"/>
-        </el-form-item>
-        <el-form-item label="维保企业">
-          <el-input  v-model="wbqy"/>
-        </el-form-item>
-        <el-form-item label="物业确认结果">
-          <el-input  v-model="wyAck"/>
-        </el-form-item>
-        <el-form-item>
-          <el-button type="primary" class="input-group btn-login" @click="edit(data.id)">确认巡检结果</el-button>
-        </el-form-item>
-      </el-form>
     </div>
+
   </div>
 </template>
 <script>
@@ -56,9 +63,9 @@
         data:'',
         name:'',
         creationTime:'',
-        pollingTime:'',
+        nextPollingTime:'',
         WYAckTime:'',
-        firstPollingTime:'',
+        pollingTime:'',
         PollingType:'',
         pollingPicUrls:'',
         pollingEndPicUrls:'',
@@ -68,7 +75,16 @@
         wyAck:'',
         message: "设巡检工单信息数据",
         msg: false,
-        notnull: false
+        notnull: false,
+        type:[
+          "周检",
+          "月检",
+          "季检",
+          "年检",
+        ],
+        button:[
+          '确认巡检结果',
+          '已确认']
       };
     },
     created(){
@@ -93,6 +109,7 @@
             }
           )
           .then(res => {
+            console.log("确认巡检", res);
             if (res.data.code == "1") {
               window.localStorage.setItem(
                 "element",
@@ -101,15 +118,15 @@
               this.data = res.data.data;
               this.name = this.data.equipment.name;
               this.creationTime = this.data.creationTime;
-              this.pollingTime = this.data.pollingTime;
+              this.pollingTime = this.data.thisPollingTime;
               this.WYAckTime = this.data.WYAckTime;
-              this.firstPollingTime = this.data.firstPollingTime;
-              this.PollingType = this.data.PollingType;
-              this.pollingPicUrls = this.data.pollingPicUrls;
-              this.pollingEndPicUrls = this.data.pollingEndPicUrls;
+              this.nextPollingTime = this.data.nextPollingTime;
+              this.PollingType = this.data.pollingType;
+              // this.pollingPicUrls = this.data.pollingPicUrls;
+              this.pollingEndPicUrls = this.GLOBAL.BASE_URL+this.data.pollingEndPicUrls;
               this.pollingMsg = this.data.pollingMsg;
               this.wxg = this.data.wxg.name;
-              this.wbqy = this.data.wbqy.username;
+              this.wbqy = this.data.wbqy.name;
               this.wyAck = this.data.wyAck;
             } else {
               this.$router.push({
@@ -129,6 +146,13 @@
           });
       },
       edit: function (pollingId) {
+        // 网络请求延迟界面
+        const loading = this.$loading({
+          lock: true,
+          text: 'Loading',
+          spinner: 'el-icon-loading',
+          background: 'rgba(0, 0, 0, 0.7)'
+        });
         if (pollingId === "") {
           this.notnull = true;
         } else {
@@ -136,7 +160,7 @@
             .post(
               "/polling/ackPollingResult",
               {
-                id:pollingId
+                'pollingId':pollingId
               },
               {
                 headers: {
@@ -150,14 +174,18 @@
               }
             )
             .then(res => {
-              if (res.data.code === "1") {
+              console.log("确认成功"+res);
+              loading.close();
+              if (res.data.code === 1) {
+                this.$toast.success('确认成功');
                 window.localStorage.setItem(
                   "xjgd",
                   JSON.stringify(res.data.token)
                 );
 
-                this.$router.replace("/PatrolReminderPCBlack");
+                this.$router.go(-1);
               } else {
+                this.$toast.fail('确认失败');
                 this.$router.push({
                   path: "/"
                 });

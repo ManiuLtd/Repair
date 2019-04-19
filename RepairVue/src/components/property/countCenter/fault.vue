@@ -6,7 +6,7 @@
   <!--cnpm install echarts -S-->
   <div id="fault">
     <!-- 为ECharts准备一个具备大小（宽高）的Dom -->
-    <div id="myChart" style="width: 100%;height:35rem;"></div>
+    <div id="myChart" style="width: 100%;height:7rem;"></div>
     <p>（x轴为故障发生时间，y轴为故障发生次数）</p>
   </div>
 </template>
@@ -79,9 +79,15 @@
           tooltip: {},
           xAxis: {
             // data: ["衬衫", "羊毛衫", "雪纺衫", "裤子", "高跟鞋", "袜子"]
-            data: this.time
+            data: this.time,
+            axisLabel: {
+              // 可以设置为0强制显示所有标签
+              interval:0,
+              // 标签倾斜的角度
+              rotate:40
+            },
           },
-          yAxis: {},
+          yAxis: {minInterval : 1},
           series: [{
             name: '销量',
             type: 'bar',

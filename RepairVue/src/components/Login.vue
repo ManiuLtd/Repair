@@ -66,6 +66,19 @@
           });
         }
       }
+      if(this.user.length){
+        console.log("user",this.user.length);
+      }else {
+        console.log("user111");
+        window.JPush.deleteAlias({ sequence: 1 },
+          (result) => {
+            var sequence = result.sequence
+          }, (error) => {
+            var sequence = error.sequence
+            var errorCode = error.code
+          })
+      }
+
     },
     methods: {
       errmiss: function () {
@@ -136,6 +149,7 @@
 
 
               } else {
+                this.$toast(res.data.msg);
                 console.log("Login fail ", res);
                 this.msg = true;
               }

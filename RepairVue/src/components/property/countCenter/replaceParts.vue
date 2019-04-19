@@ -1,6 +1,6 @@
 <template>
   <div id="replace">
-    <div id="myChart" style="width: 100%;height:35rem;"></div>
+    <div id="myChart" style="width: 100%;height:7rem;"></div>
     <p>（x轴为更换配件名称，y轴为更换的数量）</p>
   </div>
 </template>
@@ -76,9 +76,15 @@
           tooltip: {},
           xAxis: {
             // data: ["衬衫", "羊毛衫", "雪纺衫", "裤子", "高跟鞋", "袜子"]
-            data: this.name
+            data: this.name,
+            axisLabel: {
+              // 可以设置为0强制显示所有标签
+              interval:0,
+              // 标签倾斜的角度
+              rotate:40
+            },
           },
-          yAxis: {},
+          yAxis: {minInterval : 1},
           series: [{
             name: '销量',
             type: 'bar',

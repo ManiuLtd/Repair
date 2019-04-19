@@ -1,0 +1,32 @@
+{
+  "prepare_queue": {
+    "installed": [],
+    "uninstalled": []
+  },
+  "config_munge": {
+    "files": {}
+  },
+  "installed_plugins": {
+    "cordova-plugin-alipay-v2": {
+      "APP_ID": "[2017022705932488]",
+      "PACKAGE_NAME": "com.nuc.repair"
+    },
+    "jpush-phonegap-plugin": {
+      "APP_KEY": "d06d24d510206d176f543fa6",
+      "CHANNEL": "developer-default",
+      "PACKAGE_NAME": "com.nuc.repair"
+    },
+    "cordova-plugin-adam-wechat": {
+      "WECHATAPPID": "wxc7dc6a9e62826cf4",
+      "PACKAGE_NAME": "com.nuc.repair"
+    }
+  },
+  "dependent_plugins": {
+    "cordova-plugin-device": {
+      "PACKAGE_NAME": "com.nuc.repair"
+    },
+    "cordova-plugin-jcore": {
+      "PACKAGE_NAME": "com.nuc.repair"
+    }
+  }
+}

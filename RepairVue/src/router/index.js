@@ -4,7 +4,9 @@ import Router from 'vue-router'
 import Register from '@/components/Register';
 import Login from "@/components/Login";
 /*手机端*/
+import CompanyWUYE from '@/components/CompanyWUYE'
 import Index from '@/components/Property';
+import WUYESelfEdit from '@/components/WUYESelfEdit'
 import deviceEdit from "@/components/property/deviceManage/edit";
 import deviceIndex from "@/components/property/deviceManage/index";
 import deviceBlack from "@/components/property/deviceManage/black";
@@ -37,58 +39,23 @@ import replacePartsPH from "@/components/property/countCenter/replaceParts";
 import PatrolReminderIndex from "@/components/property/PatrolReminder/index";
 import PatrolReminderSelect from "@/components/property/PatrolReminder/select";
 import PatrolReminderBlack from "@/components/property/PatrolReminder/black";
-/*PC端*/
-import PropertyPCIndex from "@/components/propertyPC/index";
-import devicePCEdit from "@/components/propertyPC/deviceManage/edit";
-import devicePCIndex from "@/components/propertyPC/deviceManage/index";
-import devicePCXjPlan from "@/components/propertyPC/deviceManage/xjPlan";
-import devicePCBlack from "@/components/propertyPC/deviceManage/black";
-import devicePCWarranty from "@/components/propertyPC/deviceManage/warranty";
-import warrantyPCMes from "@/components/propertyPC/deviceManage/warrantyMes";
-import complaintPCIndex from "@/components/propertyPC/complaintManage/index";
-import repairMainPC from "@/components/propertyPC/complaintManage/repairMain";
-import repairMain1PC from "@/components/propertyPC/deviceManage/repairMain";
-import contractPCEdit from "@/components/propertyPC/contractManage/edit";
-import contractPCSelect from "@/components/propertyPC/contractManage/select";
-import contractPCBlack from "@/components/propertyPC/contractManage/black";
-import announcePCEdit from "@/components/propertyPC/announceManage/edit";
-import announcePCBlack from "@/components/propertyPC/announceManage/black";
-import announcePCIndex from "@/components/propertyPC/announceManage/index";
-import demandPCEdit from "@/components/propertyPC/demandManage/edit";
-import demandPCBlack from "@/components/propertyPC/demandManage/black";
-import demandPCIndex from "@/components/propertyPC/demandManage/index";
-import quotePCSelect from "@/components/propertyPC/demandManage/select";
-import patrolReminderPCIndex from "@/components/propertyPC/PatrolReminder/index";
-import editPCSubAccount from "@/components/propertyPC/editSubAccount";
-import GeneratePCSubAccount from "@/components/propertyPC/GenerateSubAccount";
-import subPCAccount from "@/components/propertyPC/subAccount";
-import contractPCIndex from "@/components/propertyPC/contractManage/index";
-import checkHistoryPC from "@/components/propertyPC/countCenter/checkHistory";
-import countPC from "@/components/propertyPC/countCenter/count";
-import equipmentPC from "@/components/propertyPC/countCenter/equipment";
-import faultPC from "@/components/propertyPC/countCenter/fault";
-import replacePartsPC from "@/components/propertyPC/countCenter/replaceParts";
-import PatrolReminderPCIndex from "@/components/propertyPC/PatrolReminder/index";
-import PatrolReminderPCSelect from "@/components/propertyPC/PatrolReminder/select";
-import PatrolReminderPCBlack from "@/components/propertyPC/PatrolReminder/black";
+import Black from '@/components/property/black'
 
-
-// import $ from 'jquery' ;
-// const Vue = require('vue');
-// const Router = require('vue-router');
 import '../../node_modules/bootstrap/dist/css/bootstrap.css';
 import '../../node_modules/bootstrap/dist/js/bootstrap.js';
 import Company from "@/components/Company";
 import CompanyA from '@/components/companyA'
+import WithWe from '@/components/withWe'
 import Worker from '@/components/Worker'
-import Test from "@/components/Test";
 import ManagePro from "@/components/managePro";
 import ProCon from '@/components/proCon'
 import SelfEdit from '@/components/selfEdit'
 import PartsManage from '@/components/PartsManage/PartsManage'
 import PartsAddMessage from '@/components/PartsManage/PartsAddMessage'
-import PartsAddNum from '@/components/PartsManage/PartsAddNum'
+// import PartsAddNum from '@/components/PartsManage/PartsAddNum'
 import PartsReq from '@/components/PartsManage/PartsReq'
+import PartsReq1 from '@/components/PartsManage/PartsReq1'
+import PartsReq2 from '@/components/PartsManage/PartsReq2'
 import PartsReqAll from '@/components/PartsManage/PartsReqAll'
 import SelectAll from '@/components/PartsManage/SelectAll'
 import ShowPartsMessage from '@/components/PartsManage/showPartsMessage'
@@ -113,7 +80,10 @@ import WaitListFixer from '@/components/RepairListFixer/waitListFixer'
 import ListHistory from '@/components/RepairListFixer/listHistory'
 import SelectParts from '@/components/RepairListFixer/selectParts'
 import BackMessage from '@/components/RepairListFixer/backMessage'
+import SelectWy from "@/components/checkPlan/selectWy"
 import SelectAllEquipment from '@/components/checkPlan/selectAllEquipment'
+import SelectEquip from "@/components/checkPlan/selectEquip"
+import HistoryList from "@/components/checkPlan/historyList"
 import SubmitPlan from '@/components/checkPlan/submitPlan'
 import PayForMember from '@/components/payForMember'
 import Polling from '@/components/RepairListFixer/polling'
@@ -123,357 +93,301 @@ import Fault from '@/components/countCenter/fault'
 import CheckHistory from '@/components/countCenter/checkHistory'
 import ReplaceParts from '@/components/countCenter/replaceParts'
 import Equipment from '@/components/countCenter/equipment'
+import BackMessageWBQY from '@/components/backMessageWBQY'
 Vue.use(Router);
 export default new Router({
 routes: [
     {
       path: '/',
-      name: 'Login',
-      component: Login
+      // name: 'Login',
+      redirect: {
+        name: "Login"
+      },
+      // 登陆权限包括三个端口的权限，其实就是和数组里的元素比对，相同说明是同一权限的，不同说明是跨权限的。
+      meta:['wbqy','wxg','wy']
+
     },
+  {
+    path: '/login',
+    name: 'Login',
+    component: Login,
+    meta:['wbqy','wxg','wy']
+
+  },
     {
       path: '/register',
       name: 'register',
       component: Register
     },
-    {
-      path: '/index',
-      name: 'index',
-      component: Index
-    },
+
+  {
+    path: '/CompanyWUYE',
+    component: CompanyWUYE,
+    meta:['wy'],
+    // 嵌套路由
+    children: [
+      //   // 重定向，默认打开页面是companyA  (注意：当某个路由有子集路由的时候，这时候父级路由需要一个默认的路由，所以父级路由不能定义name属性。
+      // 解决办法：即去除父级的name属性即可。)
+      {
+        path: "/",
+        redirect: {
+          name: "index"
+        }
+      },
+      {
+        path: "/index",
+        name: "index",
+        component: Index,
+        meta:['wy'],
+      },
+      {
+        path: '/WUYESelfEdit',
+        name: 'WUYESelfEdit',
+        component: WUYESelfEdit,
+        meta:['wy'],
+
+      }
+    ]
+  },
     {
       path:'/equipment/edit/:elementId',
       name:'elementEdit',
-      component:deviceEdit
+      component:deviceEdit,
+      meta:['wy'],
+
     },
     {
       path:'/equipment/warrantyMes/:elementId',
       name:'warrantyMes',
-      component:warrantyMes
+      component:warrantyMes,
+      meta:['wy'],
+
     },
     {
       path:'/equipment/index',
       name:'equipmentIndex',
-      component:deviceIndex
+      component:deviceIndex,
+      meta:['wy'],
+
     },
     {
       path:'/equipment/xjPlan/:elementId',
       name:'equipmentXjPlan',
-      component:deviceXjPlan
+      component:deviceXjPlan,
+      meta:['wy'],
+
     },
     {
       path:'/equipment/warranty',
       name:'warrantyIndex',
-      component:deviceWarranty
+      component:deviceWarranty,
+      meta:['wy'],
+
     },
     {
       path:'/contract/edit/:contractId',
       name:'contractEdit',
-      component:contractEdit
+      component:contractEdit,
+      meta:['wy'],
+
     },
     {
       path:'/contract/index',
       name:'contractIndex',
-      component:contractIndex
+      component:contractIndex,
+      meta:['wy'],
+
     },
     {
       path:'/contract/select/:contractId',
       name:'contractSelect',
-      component:contractSelect
+      component:contractSelect,
+      meta:['wy'],
+
     },
     {
       path:'/announce/edit/:announceId',
       name:'announceEdit',
-      component:announceEdit
+      component:announceEdit,
+      meta:['wy'],
+
     },
     {
       path:'/announce/index',
       name:'announceIndex',
-      component:announceIndex
+      component:announceIndex,
+      meta:['wy'],
+
     },
     {
       path:'/demand/edit/:demandId',
       name:'demandEdit',
-      component:demandEdit
+      component:demandEdit,
+      meta:['wy'],
+
     },
     {
       path:'/quoteSelect/:quoteId',
       name:'quoteSelect',
-      component:quoteSelect
+      component:quoteSelect,
+      meta:['wy'],
+
     },
     {
       path:'/demand/index',
       name:'demandIndex',
-      component:demandIndex
+      component:demandIndex,
+      meta:['wy'],
+
     },
     {
       path:'/complaint/repair/:repairId',
       name:'repair',
-      component:repairMain
+      component:repairMain,
+      meta:['wy'],
+
     },
     {
       path:'/repairManage/repair/:repairId',
       name:'repair1',
-      component:repairMain1
+      component:repairMain1,
+      meta:['wy'],
+
     },
     {
       path:'/complaint/index',
       name:'complaintIndex',
-      component:complaintIndex
+      component:complaintIndex,
+      meta:['wy'],
     },
     {
       path:'/patrolReminder/index',
       name:'patrolReminderIndex',
-      component:patrolReminderIndex
+      component:patrolReminderIndex,
+      meta:['wy'],
+
     },
     {
       path: '/deviceBlack',
       name: 'deviceBlack',
-      component: deviceBlack
+      component: deviceBlack,
+      meta:['wy'],
+
     },
     {
       path: '/demandBlack',
       name: 'demandBlack',
-      component: demandBlack
+      component: demandBlack,
+      meta:['wy'],
+
     },
     {
       path: '/PatrolReminderBlack',
       name: 'PatrolReminderBlack',
-      component: PatrolReminderBlack
+      component: PatrolReminderBlack,
+      meta:['wy'],
+
     },
     {
       path: '/contractBlack',
       name: 'contractBlack',
-      component: contractBlack
+      component: contractBlack,
+      meta:['wy'],
+
     },
     {
       path: '/announceBlack',
       name: 'announceBlack',
-      component: announceBlack
+      component: announceBlack,
+      meta:['wy'],
+
     },
     {
       path: '/editSubAccount/:subAccountId',
       name: 'editSubAccount',
-      component: editSubAccount
+      component: editSubAccount,
+      meta:['wy'],
+
     },
     {
       path: '/GenerateSubAccount',
       name: 'GenerateSubAccount',
-      component: GenerateSubAccount
+      component: GenerateSubAccount,
+      meta:['wy'],
+
     },
     {
       path: '/subAccount/:subAccountId',
       name: 'subAccount',
-      component: subAccount
+      component: subAccount,
+      meta:['wy'],
+
     },
   {
     path: "/countCenterPH/count",
     name: 'countPH',
     component: countPH,
+    meta:['wy'],
+
     children: [
       {
         path: '/countCenterPH/fault',
         name: 'faultPH',
         component: faultPH,
+        meta:['wy'],
+
       },
       {
         path: '/countCenterPH/checkHistory',
         name: 'checkHistoryPH',
-        component: checkHistoryPH
+        component: checkHistoryPH,
+        meta:['wy'],
+
       },
       {
         path: '/countCenterPH/replaceParts',
         name: 'replacePartsPH',
-        component: replacePartsPH
-      },
+        component: replacePartsPH,
+        meta:['wy'],
+
+      }
+    ]},
       {
         path: '/countCenterPH/equipment',
         name: 'equipmentPH',
-        component: equipmentPH
+        component: equipmentPH,
+        meta:['wy'],
+
       },
       {
         path: '/PatrolReminder/index',
         name: 'PatrolReminderIndex',
-        component: PatrolReminderIndex
+        component: PatrolReminderIndex,
+        meta:['wy'],
+
       },
       {
         path: '/PatrolReminder/select/:xjgdId',
         name: 'PatrolReminderSelect',
-        component: PatrolReminderSelect
-      },
-      /*PC端*/
-      {
-        path: '/PropertyPCIndex',
-        name: 'PropertyPCIndex',
-        component: PropertyPCIndex
+        component: PatrolReminderSelect,
+        meta:['wy'],
+
       },
       {
-        path: '/equipmentPC/edit/:elementId',
-        name: 'elementPCEdit',
-        component: devicePCEdit
+        path: '/property/black',
+        name: 'black',
+        component: Black,
+        meta:['wy'],
+
       },
-      {
-        path: '/equipmentPC/xjPlan/:elementId',
-        name: 'equipmentPCXjPlan',
-        component: devicePCXjPlan
-      },
-      {
-        path: '/equipmentPC/warrantyMes/:elementId',
-        name: 'warrantyPCMes',
-        component: warrantyPCMes
-      },
-      {
-        path: '/equipmentPC/index',
-        name: 'equipmentPCIndex',
-        component: devicePCIndex
-      },
-      {
-        path: '/equipmentPC/warranty',
-        name: 'warrantyPCIndex',
-        component: devicePCWarranty
-      },
-      {
-        path: '/contractPC/edit/:contractId',
-        name: 'contractPCEdit',
-        component: contractPCEdit
-      },
-      {
-        path: '/contractPC/index',
-        name: 'contractPCIndex',
-        component: contractPCIndex
-      },
-      {
-        path: '/contractPC/select/:contractId',
-        name: 'contractPCSelect',
-        component: contractPCSelect
-      },
-      {
-        path: '/announcePC/edit/:announceId',
-        name: 'announcePCEdit',
-        component: announcePCEdit
-      },
-      {
-        path: '/announcePC/index',
-        name: 'announcePCIndex',
-        component: announcePCIndex
-      },
-      {
-        path: '/demandPC/edit/:demandId',
-        name: 'demandPCEdit',
-        component: demandPCEdit
-      },
-      {
-        path: '/quotePCSelect/:quoteId',
-        name: 'quotePCSelect',
-        component: quotePCSelect
-      },
-      {
-        path: '/demandPC/index',
-        name: 'demandPCIndex',
-        component: demandPCIndex
-      },
-      {
-        path: '/complaintPC/repair/:repairId',
-        name: 'repairPC',
-        component: repairMainPC
-      },
-      {
-        path: '/repairManagePC/repair/:repairId',
-        name: 'repair1PC',
-        component: repairMain1PC
-      },
-      {
-        path: '/complaintPC/index',
-        name: 'complaintPCIndex',
-        component: complaintPCIndex
-      },
-      {
-        path: '/patrolReminderPC/index',
-        name: 'patrolReminderPCIndex',
-        component: patrolReminderPCIndex
-      },
-      {
-        path: '/devicePCBlack',
-        name: 'devicePCBlack',
-        component: devicePCBlack
-      },
-      {
-        path: '/demandPCBlack',
-        name: 'demandPCBlack',
-        component: demandPCBlack
-      },
-      {
-        path: '/contractPCBlack',
-        name: 'contractPCBlack',
-        component: contractPCBlack
-      },
-      {
-        path: '/announcePCBlack',
-        name: 'announcePCBlack',
-        component: announcePCBlack
-      },
-      {
-        path: '/editPCSubAccount/:subAccountId',
-        name: 'editPCSubAccount',
-        component: editPCSubAccount
-      },
-      {
-        path: '/GeneratePCSubAccount',
-        name: 'GeneratePCSubAccount',
-        component: GeneratePCSubAccount
-      },
-      {
-        path: '/subPCAccount/:subAccountId',
-        name: 'subPCAccount',
-        component: subPCAccount
-      },
-      {
-        path: "/countCenterPC/count",
-        name: 'countPC',
-        component: countPC,
-        children: [
-          {
-            path: '/countCenterPC/fault',
-            name: 'faultPC',
-            component: faultPC,
-          },
-          {
-            path: '/countCenterPC/checkHistory',
-            name: 'checkHistoryPC',
-            component: checkHistoryPC
-          },
-          {
-            path: '/countCenterPC/replaceParts',
-            name: 'replacePartsPC',
-            component: replacePartsPC
-          }
-        ]
-      },
-      {
-        path: '/countCenterPC/equipment',
-        name: 'equipmentPC',
-        component: equipmentPC
-      },
-      {
-        path: '/PatrolReminderPC/index',
-        name: 'PatrolReminderPCIndex',
-        component: PatrolReminderPCIndex
-      },
-      {
-        path: '/PatrolReminderPC/select/:xjgdId',
-        name: 'PatrolReminderPCSelect',
-        component: PatrolReminderPCSelect
-      },
-      {
-        path: '/PatrolReminderPCBlack',
-        name: 'PatrolReminderPCBlack',
-        component: PatrolReminderPCBlack
-      },
+
       {
         path: '/company',
         // name: 'company',
 
         component: Company,
+        meta:['wbqy'],
+
         // 嵌套路由
         children: [
           //   // 重定向，默认打开页面是companyA  (注意：当某个路由有子集路由的时候，这时候父级路由需要一个默认的路由，所以父级路由不能定义name属性。
@@ -487,34 +401,52 @@ routes: [
           {
             path: "/companyA",
             name: "companyA",
-            component: CompanyA
+            component: CompanyA,
+            meta:['wbqy']
+
           },
           {
             path: "/selfEdit",
             name: "selfEdit",
-            component: SelfEdit
+            component: SelfEdit,
+            meta:['wbqy']
+
           }
         ]
       },
       {
+        path: "/withWe",
+        name: "withWe",
+        component: WithWe,
+        meta:['wy','wbqy']
+
+      },
+      {
         path: '/worker',
         name: 'worker',
-        component: Worker
+        component: Worker,
+        meta:['wxg']
       },
       {
         path: '/managePro',
         name: 'managePro',
         component: ManagePro,
+        meta:['wbqy']
+
       },
       {
         path: '/proCon',
         name: 'proCon',
-        component: ProCon
+        component: ProCon,
+        meta:['wbqy']
+
       },
       {
         path: '/partsManage',
         // name:'partsManage',
         component: PartsManage,
+        meta:['wbqy'],
+
         // 嵌套路由
         children: [
           {
@@ -522,44 +454,80 @@ routes: [
             path: '/',
             redirect: {
               name: "partsAddMessage"
-            }
+            },
+            meta:['wbqy']
+
           },
           {
             path: "/partsManage/partsAddMessage",
             name: "partsAddMessage",
-            component: PartsAddMessage
+            component: PartsAddMessage,
+            meta:['wbqy']
+
           },
-          {
-            path: "/partsManage/partsAddNum",
-            name: "partsAddNum",
-            component: PartsAddNum
-          },
+          // {
+          //   path: "/partsManage/partsAddNum",
+          //   name: "partsAddNum",
+          //   component: PartsAddNum
+          // },
           {
             path: "/partsManage/partsReq",
-            name: "partsReq",
-            component: PartsReq
+            // name: "partsReq",
+            component: PartsReq,
+            meta:['wbqy'],
+
+            children: [
+              {
+                // 重定向，默认打开页面是showFixerReqs
+                path: '/',
+                redirect: {
+                  name: "partsReq1"
+                }
+              },
+              {
+                path: "/partsManage/partsReq1",
+                name: "partsReq1",
+                component: PartsReq1,
+                meta:['wbqy']
+
+              },
+              {
+                path: "/partsManage/partsReq2",
+                name: "partsReq2",
+                component: PartsReq2,
+                meta:['wbqy']
+
+              },
+            ]
           },
           {
             path: "/partsManage/partsReqAll",
             name: "partsReqAll",
-            component: PartsReqAll
+            component: PartsReqAll,
+            meta:['wbqy']
+
           }
         ]
       },
       {
         path: "/selectAll",
         name: "selectAll",
-        component: SelectAll
+        component: SelectAll,
+        meta:['wbqy']
+
       },
       {
         path: "/showPartsMessage",
         name: "showPartsMessage",
-        component: ShowPartsMessage
+        component: ShowPartsMessage,
+        meta:['wbqy']
+
       },
       {
         path: "/fixerManage",
         // name:"fixerManage",
         component: FixerManage,
+        meta:['wbqy'],
         // 嵌套路由
         children: [
           {
@@ -573,28 +541,36 @@ routes: [
             path: "/fixerManage/showFixerReqs",
             name: "showFixerReqs",
             component: ShowFixerReqs,
+            meta:['wbqy']
           },
           {
             path: "/fixerManage/editFixerMessage",
             name: "editFixerMessage",
             component: EditFixerMessage,
+            meta:['wbqy']
+
           },
           {
             path: "/fixerManage/sendTask",
             name: "sendTask",
             component: SendTask,
+            meta:['wbqy']
+
           }
         ]
       },
       {
         path: "/editFixerM",
         name: "editFixerM",
-        component: EditFixerM
+        component: EditFixerM,
+        meta:['wbqy']
+
       },
       {
         path: "/repairList",
         // name:"repairList",
         component: RepairList,
+        meta:['wbqy'],
         children: [
           {
             // 重定向，默认打开页面是noRepair
@@ -606,109 +582,178 @@ routes: [
           {
             path: "/repairList/noRepair",
             name: "noRepair",
-            component: NoRepair
+            component: NoRepair,
+            meta:['wbqy']
+
           },
           {
             path: "/repairList/repairing",
             name: "repairing",
-            component: Repairing
+            component: Repairing,
+            meta:['wbqy']
+
           },
           {
             path: "/repairList/finishList",
             name: "finishList",
-            component: FinishList
+            component: FinishList,
+            meta:['wbqy']
+
           },
           {
             path: "/repairList/showAllRepair",
             name: "showAllRepair",
-            component: ShowAllRepair
+            component: ShowAllRepair,
+            meta:['wbqy']
+
           }
         ]
       },
       {
         path: "/bidding",
         name: "bidding",
-        component: Bidding
+        component: Bidding,
+        meta:['wbqy']
+
       },
       {
         path: "/notice",
         name: "notice",
-        component: Notice
+        component: Notice,
+        meta:['wbqy']
+
       },
       {
         path: "/addNotice",
         name: "addNotice",
-        component: AddNotice
+        component: AddNotice,
+        meta:['wbqy']
+
       },
       {
         path: "/RepairListFixer/repairListFixer",
         name: "repairListFixer",
-        component: RepairListFixer
+        component: RepairListFixer,
+        meta:['wxg']
+
       },
       {
         path: "/RepairListFixer/sign",
         name: "sign",
-        component: Sign
+        component: Sign,
+        meta:['wxg']
+
+
       },
       {
         path: "/RepairListFixer/saoma",
         name: "saoma",
-        component: Saoma
+        component: Saoma,
+        meta:['wxg']
+
+
       },
       {
         path: "/RepairListFixer/editFixerSelf",
         name: "editFixerSelf",
-        component: EditFixerSelf
+        component: EditFixerSelf,
+        meta:['wxg']
+
       },
       {
         path: "/RepairListFixer/waitListFixer",
         name: "waitListFixer",
-        component: WaitListFixer
+        component: WaitListFixer,
+        meta:['wxg']
+
       },
       {
         path: "/RepairListFixer/listHistory",
         name: "listHistory",
-        component: ListHistory
+        component: ListHistory,
+        meta:['wxg']
+
       },
       {
         path: "/RepairListFixer/selectParts",
         name: "selectParts",
-        component: SelectParts
+        component: SelectParts,
+        meta:['wxg']
+
       },
       {
         path: "/RepairListFixer/backMessage",
         name: "backMessage",
-        component: BackMessage
+        component: BackMessage,
+        meta:['wxg']
+
       },
       {
         path: "/RepairListFixer/polling",
         name: "polling",
-        component: Polling
+        component: Polling,
+        meta:['wxg']
+
       },
       {
         path: "/RepairListFixer/submitPoll",
         name: "submitPoll",
-        component: SubmitPoll
+        component: SubmitPoll,
+        meta:['wxg']
+
       },
       {
         path: "/checkPlan/selectAllEquipment",
         name: "selectAllEquipment",
-        component: SelectAllEquipment
+        component: SelectAllEquipment,
+        meta:['wbqy']
+
       },
+  {
+    path: "/checkPlan/selectWy",
+    name: "selectWy",
+    component: SelectWy,
+    meta:['wbqy']
+
+
+  },{
+    path: "/checkPlan/selectEquip",
+    name: "selectEquip",
+    component: SelectEquip,
+    meta:['wbqy']
+
+
+  },
       {
         path: "/checkPlan/submitPlan",
         name: "submitPlan",
-        component: SubmitPlan
+        component: SubmitPlan,
+        meta:['wbqy']
+
+
       },
+  {
+    path: "/checkPlan/historyList",
+    name: "historyList",
+    component: HistoryList,
+    meta:['wbqy']
+
+
+  },
       {
         path: "/payForMember",
         name: "payForMember",
-        component: PayForMember
+        component: PayForMember,
+        meta:['wy','wbqy']
+
+
       },
       {
         path: "/countCenter/count",
         name: 'count',
         component: Count,
+        meta:['wbqy'],
+
         children: [
           // {
           //   path:'/',
@@ -720,23 +765,43 @@ routes: [
             path: '/countCenter/fault',
             name: 'fault',
             component: Fault,
+            meta:['wbqy']
+
+
           },
           {
             path: '/countCenter/checkHistory',
             name: 'checkHistory',
-            component: CheckHistory
+            component: CheckHistory,
+            meta:['wbqy']
+
+
           },
           {
             path: '/countCenter/replaceParts',
             name: 'replaceParts',
-            component: ReplaceParts
+            component: ReplaceParts,
+            meta:['wbqy']
+
+
           }
         ]
       },
       {
         path: '/countCenter/equipment',
         name: 'equipment',
-        component: Equipment
+        component: Equipment,
+        meta:['wbqy']
+
+
+      },
+      {
+        path: '/backMessageWBQY',
+        name: 'backMessageWBQY',
+        component: BackMessageWBQY,
+        meta:['wbqy']
+
+
       }
-    ]}
+
   ]})

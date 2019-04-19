@@ -1,0 +1,72 @@
+{
+  "_from": "cordova-plugin-adam-wechat@^3.0.6",
+  "_id": "cordova-plugin-adam-wechat@3.0.6",
+  "_inBundle": false,
+  "_integrity": "sha512-3UH3lECxrPcDkl2S4zwmuPTP/oNWIsvONjsB47ksIktQBSZ3v05dfzKiOHd06lxkQUhx6lKiuGFHzhvqpBSelw==",
+  "_location": "/cordova-plugin-adam-wechat",
+  "_phantomChildren": {},
+  "_requested": {
+    "type": "range",
+    "registry": true,
+    "raw": "cordova-plugin-adam-wechat@^3.0.6",
+    "name": "cordova-plugin-adam-wechat",
+    "escapedName": "cordova-plugin-adam-wechat",
+    "rawSpec": "^3.0.6",
+    "saveSpec": null,
+    "fetchSpec": "^3.0.6"
+  },
+  "_requiredBy": [
+    "#USER",
+    "/"
+  ],
+  "_resolved": "https://registry.npmjs.org/cordova-plugin-adam-wechat/-/cordova-plugin-adam-wechat-3.0.6.tgz",
+  "_shasum": "3cd37c3dbbffaaf30e6e7df2fda0bec3a2b8b924",
+  "_spec": "cordova-plugin-adam-wechat@^3.0.6",
+  "_where": "/Users/zhogtongkuaixiu/Desktop/Repair",
+  "author": {
+    "name": "adam",
+    "email": "adam198824@gmail.com"
+  },
+  "bugs": {
+    "url": "https://github.com/adam198824/cordova-plugin-wechat/issues"
+  },
+  "bundleDependencies": false,
+  "cordova": {
+    "id": "cordova-plugin-adam-wechat",
+    "platforms": [
+      "ios",
+      "android"
+    ]
+  },
+  "deprecated": false,
+  "description": "A cordova plugin, a JS version of Wechat SDK",
+  "engines": {
+    "cordovaDependencies": {
+      "2.0.0": {
+        "cordova": ">=6.1.0",
+        "cordova-android": ">=6.1.0",
+        "cordova-ios": ">=4.3.1"
+      },
+      "<2.0.0": {
+        "cordova": ">=3.5.0"
+      }
+    }
+  },
+  "homepage": "https://github.com/adam198824/cordova-plugin-wechat#readme",
+  "keywords": [
+    "cordova",
+    "wechat",
+    "weixin",
+    "share",
+    "ecosystem:cordova",
+    "cordova-ios",
+    "cordova-android"
+  ],
+  "license": "MIT",
+  "name": "cordova-plugin-adam-wechat",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/adam198824/cordova-plugin-wechat.git"
+  },
+  "version": "3.0.6"
+}

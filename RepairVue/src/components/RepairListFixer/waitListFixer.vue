@@ -1,8 +1,8 @@
 <template>
   <!--使网页的div高度满屏的方法：直接给div的高度设成  height:100vh，即可用让div的高度是视窗的高度了-->
   <!--使网页的div宽度满屏的方法：直接给div的宽度设成width:100vw,即可将div的宽度设成视窗的宽度-->
-  <div id="waitListFixer" style=" height:100vh;background-color: #eaeaea;">
-    <van-row type="flex" justify="space-between" style="height: 67px;background-color: darkgoldenrod;color: whitesmoke;font-size: 20px;font-weight: bold;line-height: 67px;letter-spacing:4px;" class="header">
+  <div id="waitListFixer" style="">
+    <van-row type="flex" justify="space-between" class="header" style="position: fixed;top: 0">
       <van-col span="4">
         <router-link to="/worker">
           <van-icon name="arrow-left" size="1em" color="white"/>
@@ -11,10 +11,16 @@
       <van-col span="8" offset="2">请确认</van-col>
       <van-col span="6"></van-col>
     </van-row>
-      <div class="listCon container-fluid" style="width: 93%;background-color: white;display: inline-block;text-align: center;border-radius: 5px;margin-top: 10px;font-size: 16px;padding: 20px 15px;color: #989898;" v-for="(list,index) in listData" v-if="!show[index] && list.state > 2">
+    <div style="height: 100vh;background-color: whitesmoke;margin-top: 3em">
+      <div class="listCon container-confirm"
+           style="width: 93%;background-color: white;display: inline-block;text-align: center;border-radius: 5px;margin-top: 10px;font-size: 0.3rem;padding: 1em 0.8em;color: #989898;"
+           v-for="(list,index) in listData" v-if="!show[index] && list.state > 2">
         <van-row type="flex">
-          <van-col span="9">维修状态：<span v-html="list.state <= 2 ? isSure:isNo"></span></van-col>
-          <van-col span="5" offset="10"><van-button type="warning" size="small" @click="confirmList(list.id,index)">确认</van-button></van-col>
+          <van-col span="8" style="text-align: left">维修状态：</van-col>
+          <van-col span="5"><span v-html="list.state <= 2 ? isSure:isNo"></span></van-col>
+          <van-col span="5" offset="7">
+            <van-button type="warning" size="small" @click="confirmList(list,index)">确认</van-button>
+          </van-col>
         </van-row>
         <!--<div class="row">-->
         <!--<div class="col-xs-4 col-sm-4">维修状态：<span v-html="list.state == 2 ? isSure:isNo"></span></div>-->
@@ -28,77 +34,74 @@
       </span>
         <span style="width: 75%;display: inline-block;"></span>
       </div>
+    </div>
+
 
   </div>
 
 </template>
 <script>
   import Vue from 'vue'
+
   export default {
-    data(){
-      return{
-        listData:'',
-        isSure:'已确认',
-        isNo:'未确认',
-        show:[]
+    data() {
+      return {
+        listData: '',
+        isSure: '已确认',
+        isNo: '未确认',
+        show: []
       }
     },
-    methods:{
+    methods: {
       // toSign(v){
       //   this.$router.push({name:'sign',query:{listToSign:v}});
       // },
-      confirmList(v,k){
-        // console.log(v);
-        this.$http.post("/actionLog/WXGQueRen",{
-          actionLogId:v
-        },{
+      confirmList(v, k) {
+        // console.log("!V!"+v.id);
+        const loading = this.$loading({
+          lock: true,
+          text: 'Loading',
+          spinner: 'el-icon-loading',
+          background: 'rgba(0, 0, 0, 0.7)'
+        });
+        this.$http.post("/actionLog/WXGQueRen", {
+          actionLogId: v.id
+        }, {
           headers: {
             'Auth-Token': JSON.parse(window.localStorage.getItem("token") || "[]").toString(),
             'Content-Type': 'application/json'
           }
-        }).then((res)=>{
-          console.log("确认收到工单",res);
-          setTimeout(() => {
-            Vue.set(this.show,k,true);
-          }, 500);
-        }).catch((error)=>{
+        }).then((res) => {
+          console.log("确认收到工单", res);
+          loading.close();
+          Vue.set(this.show, k, true);
+          this.$router.replace({name: 'sign', query: {listToSign: v}});
+        }).catch((error) => {
           console.log(error);
         })
       },
       // 发起网络请求
-      getListData(){
+      getListData() {
         // 登录时，token被存在了localStorage里，现在直接调用它做请求头
         // console.log(JSON.parse(window.localStorage.getItem("token") || "[]").toString());
-        this.$http.post("/actionLog/findByWxgUsername",{},{
+        this.$http.post("/actionLog/findByWxgUsername", {}, {
           headers: {
             'Auth-Token': JSON.parse(window.localStorage.getItem("token") || "[]").toString(),
             'Content-Type': 'application/json'
           }
-        }).then((res)=>{
-          console.log("未确认维修工单",res);
+        }).then((res) => {
+          console.log("未确认维修工单", res);
           this.listData = res.data.data;
-        }).catch((error)=>{
+        }).catch((error) => {
           console.log(error);
         })
       }
     },
-    created(){
+    created() {
       this.getListData();
     }
   }
 </script>
 <!--有个有趣的现象：在worker.vue里style后加scoped无法显示背景图片，而在这个里面不加scoped无法显示背景图片-->
-<style scoped>
-  html{
-    width: 100%;
-    height: 1000px;
-    background-color: black;
-  }
-  .header{
-    background: url(../../assets/image/worker1.jpg)no-repeat;
-    background-position: -9px -8px;
-  }
-  .listCon span{
-    color: black;
-  }
+<style>
 </style>

@@ -23,9 +23,16 @@
         <allow-intent href="itms:*" />
         <allow-intent href="itms-apps:*" />
     </platform>
-    <plugin name="jpush-phonegap-plugin" spec="^3.5.1">
-        <variable name="APP_KEY" value="cee44a669e04b2a2e05e0a1e" />
+    <plugin name="cordova-plugin-alipay-v2" spec="^1.0.0">
+        <variable name="APP_ID" value="[2017022705932488]" />
     </plugin>
-    <engine name="ios" spec="4.5.5" />
-    <engine name="android" spec="7.0.0" />
+    <plugin name="jpush-phonegap-plugin" spec="^3.6.3">
+        <variable name="APP_KEY" value="d06d24d510206d176f543fa6" />
+        <variable name="CHANNEL" value="developer-default" />
+    </plugin>
+    <plugin name="cordova-plugin-adam-wechat" spec="^3.0.6">
+        <variable name="WECHATAPPID" value="wxc7dc6a9e62826cf4" />
+    </plugin>
+    <engine name="android" spec="^7.1.4" />
+    <engine name="ios" spec="^4.5.5" />
 </widget>

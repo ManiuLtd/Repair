@@ -1,17 +1,17 @@
 <template>
-  <div id="RepairList" style="height:100vh;background: whitesmoke;overflow: scroll;
-">
-      <van-row type="flex" justify="space-between" style="height: 67px;background-color: darkgoldenrod;color: whitesmoke;font-size: 20px;font-weight: bold;line-height: 67px;letter-spacing:4px;">
+  <div id="RepairList" style="background-color: whitesmoke;height: 100vh;padding-top: 1.8rem">
+      <van-row class="header" style="position: fixed;top: 0;
+" type="flex" justify="space-between">
           <van-col span="4">
-            <router-link to="/">
+            <router-link to="/companyA">
               <van-icon name="arrow-left" size="1em" color="white"/>
             </router-link>
           </van-col>
-          <van-col span="6" offset="2">维修工单</van-col>
+          <van-col span="8" offset="2">维修工单</van-col>
           <van-col span="6"></van-col>
         </van-row>
-    <div class="van-hairline--bottom">
-      <van-tabs v-model="active" color="chocolate">
+    <div class="van-hairline--bottom" style="width:100%;position: fixed;top: 0.8rem;">
+      <van-tabs v-model="active" color="grey" style="font-size: 0.2rem;">
         <van-tab>
           <div slot="title">
             <router-link to="/repairList/noRepair">未处理</router-link>
@@ -34,7 +34,6 @@
         </van-tab>
       </van-tabs>
     </div>
-
     <div class="listCon">
       <router-view></router-view>
     </div>
@@ -51,13 +50,26 @@
     }
   }
 </script>
+<style>
+  body,html{
+    height: 100%; padding: 0; margin: 0;
+  }
+
+</style>
 <style scoped>
-  a:link,a:visited{color:black;text-decoration:none;}
-  a:hover{color:chocolate;}
+  /*父路由组件设置的样式在子路由组件中可用（类名相同的话）*/
   .listCon{
-    width: 100%;
-    height: 100%;
-    color: chocolate;
+    width:100%;
+    /*!*height:100vh;*!直接设置父元素的高度为100vh即可*/
+    color: black;
+    background-color: whitesmoke;
     /*border: 1px solid red;*/
   }
 </style>
+<!--scope的没办法控制组件之外的的元素的属性-->
+<!--<style scoped>-->
+  <!--html{-->
+    <!--background-color: whitesmoke;/*无效*/-->
+  <!--}-->
+<!--</style>-->
+<!--样式污染解决办法：https://www.cnblogs.com/karthuslorin/p/9038854.html-->

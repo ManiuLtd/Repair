@@ -1,21 +1,29 @@
 <template>
-  <div class="content">
+  <div id="announce">
+    <van-row type="flex" class="header" justify="space-between">
+      <van-col span="4">
+        <router-link to="/announce/index">
+          <van-icon name="arrow-left" size="1em" color="white"/>
+        </router-link>
+      </van-col>
+      <van-col span="10" offset="2">编辑公告</van-col>
+      <van-col span="6"></van-col>
+    </van-row>
+    <div class="content">
 
-    <!--equipmentAdd-->
-    <div style="margin-top:30px;padding:10px ;">
-
-      <div class="title">
-        <h2>编辑公告</h2>
+      <!--equipmentAdd-->
+      <div style="">
+        <el-form ref="form" label-width="80px">
+          <el-form-item label="公告内容">
+            <el-input v-model="text"/>
+          </el-form-item>
+          <el-form-item>
+            <el-button type="primary" class="input-group btn-login" @click="edit(data.id)">编辑公告</el-button>
+          </el-form-item>
+        </el-form>
       </div>
-      <el-form ref="form" label-width="80px">
-        <el-form-item label="公告内容">
-          <el-input v-model="text"/>
-        </el-form-item>
-        <el-form-item>
-          <el-button type="primary" class="input-group btn-login" @click="edit(data.id)">编辑公告</el-button>
-        </el-form-item>
-      </el-form>
     </div>
+
   </div>
 </template>
 

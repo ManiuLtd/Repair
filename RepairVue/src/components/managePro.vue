@@ -1,9 +1,9 @@
 <template>
-  <div id="pro-con">
-    <div class="header" style="border-bottom: 1px solid gray">
-      <van-row type="flex" justify="space-between" style="height: 67px;background-color: darkgoldenrod;color: whitesmoke;font-size: 20px;font-weight: bold;line-height: 67px;letter-spacing:4px;">
+  <div id="pro-con" style="background-color: whitesmoke;height: 100vh">
+    <div style="">
+      <van-row class="header" type="flex" justify="space-between" style="">
         <van-col span="4">
-          <router-link to="/">
+          <router-link to="/companyA">
             <van-icon name="arrow-left" size="1em" color="white"/>
           </router-link>
         </van-col>
@@ -12,22 +12,32 @@
       </van-row>
         <!--<van-icon name="edit" size="25px" slot="right" @click-right="clickHright"/>-->
     </div>
-    <div @click="showProCon(pro)" v-for="(pro,index) in proData1" :key="index">
-      <van-panel style="width:93%;background-color: darkgoldenrod;color:white;display: inline-block;text-align: center;border-radius: 5px;margin-top: 1rem;text-align: left;padding-left: 2rem" class="van-hairline--bottom">
-        <div slot="header" style="line-height: 6rem;">
-          <van-row>
-            <van-col span="14">
-              <p style="font-size: 1.6rem;line-height: 3.5rem;padding-top: 1.5rem;font-weight: bold">物业名称</p>
-              <p style="font-size: 2rem;line-height: 3rem;margin-top: 1.8rem;font-weight: bold">{{pro.wy.name}}</p>
-            </van-col>
-            <van-col span="8" offset="2">
-              <p>{{pro.startDate}}</p>
-              <p style="margin-top: -1px">{{pro.endDate}}</p>
-            </van-col>
-          </van-row>
+    <div style="background-color: whitesmoke;">
+      <div @click="showProCon(pro)" v-for="(pro,index) in proData1" :key="index">
+        <el-card shadow="always" style="width:93%;color:black;display: inline-block;margin-top: 0.1rem;padding-left: 0.2rem;font-size: 0.3rem;">
+          <div slot="header" style="line-height: 3.5em;">
+            <van-row type="flex" justify="center">
+              <!--<van-col span="24">-->
+                <!--<p style="line-height: 0.35rem;padding-top: 0.35rem;font-weight: bold">物业名称</p>-->
+                <el-card style="font-size: 0.4rem;line-height: 1.3em;font-weight: bold;">
+                  <!--龙城健身管理服-->
+                  {{pro.wy.name}}
+                </el-card>
+                <!--<p style="font-size: 0.4rem;line-height: 0.3rem;margin-top: 0.9rem;font-weight: bold"></p>-->
+              <!--</van-col>-->
+            </van-row>
 
-        </div>
-      </van-panel>
+          </div>
+          <div>
+            <van-row type="flex" justify="center">
+              <van-col span="8">{{pro.startDate}}</van-col>
+              <van-col span="8"></van-col>
+              <van-col span="8">{{pro.endDate}}</van-col>
+            </van-row>
+          </div>
+        </el-card>
+      </div>
+
     </div>
   </div>
 </template>
@@ -46,7 +56,7 @@
         console.log('!!!',this.proData1);
         // 向proCon组件发送data
         // this.bus.$emit("proDataTo",this.proData1);
-        this.$router.push({name:'proCon',query
+        this.$router.replace({name:'proCon',query
             :{proDatax:v}});
       },
       // 发起网络请求
@@ -78,8 +88,7 @@
     }
   }
 </script>
-<style scoped>
-  body,html{
-    background-color: whitesmoke;
-  }
+<style>
+  @import "../assets/css/header.css";
+
 </style>

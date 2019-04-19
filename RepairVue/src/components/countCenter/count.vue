@@ -1,6 +1,6 @@
 <template>
   <div id="count">
-    <van-row type="flex" justify="space-between" style="height: 67px;background-color: darkgoldenrod;color: whitesmoke;font-size: 20px;font-weight: bold;line-height: 67px;letter-spacing:4px;" class="header">
+    <van-row type="flex" justify="space-between" class="header">
       <van-col span="4">
         <router-link to="/countCenter/equipment">
           <van-icon name="arrow-left" size="1em" color="white"/>
@@ -12,7 +12,7 @@
     <el-card class="box-card">
       <div slot="header" class="clearfix">
         <van-row>
-          <van-col span="5">
+          <van-col span="7">
             <span>统计分类：</span>
           </van-col>
           <van-col span="6"><span>{{text}}</span></van-col>
@@ -31,29 +31,81 @@
           </van-col>
         </van-row>
       </div>
-      <div class="block" style="width: 100%;padding: 0;">
-        <van-row>
-          <van-col span="4">
-            <span class="demonstration" style="">日期：</span>
-          </van-col>
-          <van-col span="20">
-            <el-date-picker
-              v-model="value1"
-              type="date"
-              size="mini"
-              placeholder="选择日期" style="width: 9rem;"
-              value-format="yyyy-MM-dd">
-            </el-date-picker>
-            <span style="margin:0 1rem;">至</span>
-            <el-date-picker
-              v-model="value2"
-              type="date"
-              size="mini"
-              placeholder="选择日期" style="width: 9rem;"
-              value-format="yyyy-MM-dd">
-            </el-date-picker>
-          </van-col>
-        </van-row>
+      <div class="block" style="width: 100%;padding: 0;min-height: 2em">
+        <!--<van-row>-->
+          <!--<van-col span="5">-->
+            <!--<span class="demonstration" style="">日期：</span>-->
+          <!--</van-col>-->
+        <!--</van-row>-->
+        <div style="width: 49%;border-right: 1px solid gainsboro;float: left;">
+          <el-date-picker
+            v-model="value1"
+            type="date"
+            size="mini"
+            placeholder="开始日期"
+            value-format="yyyy-MM-dd"
+            class="dataone"
+            style="width: 80%">
+          </el-date-picker>
+        </div>
+        <div style="width: 49%;float: right">
+          <el-date-picker
+            v-model="value2"
+            type="date"
+            size="mini"
+            placeholder="结束日期" style="width: 80%"
+            value-format="yyyy-MM-dd"
+          >
+          </el-date-picker>
+        </div>
+        <!--<el-row>-->
+          <!--<el-col span="12"><div>-->
+            <!--<el-date-picker-->
+              <!--v-model="value1"-->
+              <!--type="date"-->
+              <!--size="mini"-->
+              <!--placeholder="开始日期"-->
+              <!--value-format="yyyy-MM-dd"-->
+              <!--class="dataone"-->
+              <!--style="width: 100%">-->
+            <!--</el-date-picker>-->
+          <!--</div></el-col>-->
+          <!--<el-col span="12"><div>-->
+            <!---->
+          <!--</div></el-col>-->
+        <!--</el-row>-->
+        <!--<van-row style="margin-top: 1em;">-->
+          <!--<div>-->
+            <!--<van-col span="12">-->
+              <!--<el-date-picker-->
+                <!--v-model="value1"-->
+                <!--type="date"-->
+                <!--size="mini"-->
+                <!--placeholder="开始日期"-->
+                <!--value-format="yyyy-MM-dd"-->
+                <!--class="dataone">-->
+              <!--</el-date-picker>-->
+              <!--&lt;!&ndash;<div style="border: 1px solid #dcdfe6;border-radius: 4px;padding: 0.2em 0.4em">&ndash;&gt;-->
+              <!--&lt;!&ndash;<input type="date" v-model="value1" style="border: none;background-color: white;width: 100%;color: #dcdfe6">&ndash;&gt;-->
+              <!--&lt;!&ndash;</div>&ndash;&gt;-->
+            <!--</van-col>-->
+
+          <!--</div>-->
+          <!--<van-col span="12">-->
+            <!--&lt;!&ndash;<div style="border: 1px solid #dcdfe6;border-radius: 4px;padding: 0.2em 0.4em">&ndash;&gt;-->
+              <!--&lt;!&ndash;<input type="date" v-model="value2" style="border: none;background-color: white;width: 100%;color: #dcdfe6">&ndash;&gt;-->
+            <!--&lt;!&ndash;</div>&ndash;&gt;-->
+            <!--<el-date-picker-->
+              <!--v-model="value2"-->
+              <!--type="date"-->
+              <!--size="mini"-->
+              <!--placeholder="结束日期" style=""-->
+              <!--value-format="yyyy-MM-dd"-->
+              <!--&gt;-->
+            <!--</el-date-picker>-->
+          <!--</van-col>-->
+
+        <!--</van-row>-->
 
       </div>
 

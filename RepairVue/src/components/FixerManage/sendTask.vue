@@ -1,25 +1,34 @@
 <template>
   <div id="sendT">
-    <div class="listCon container-fluid" style="width: 93%;background-color: white;display: inline-block;text-align: center;border-radius: 5px;margin-top: 10px;font-size: 16px;padding: 20px 15px;color: #989898;" @click="sendRep(rep,index)" v-for="(rep,index) in RepairList">
+    <div class="container-fluid" @click="sendRep(rep,index)" v-for="(rep,index) in RepairList" v-if="rep.state>0">
       <van-row>
-        <van-col span="6">维修状态：</van-col>
-        <van-col span="15" offset="2"><span>未处理</span></van-col>
+        <van-col span="8">维修状态：</van-col>
+        <van-col span="13" offset="2"><span>{{state[rep.state-1]}}</span></van-col>
       </van-row>
-      <van-row style="margin-top: 0.6rem">
-        <van-col span="6">维修时间：</van-col>
+      <van-row style="margin-top: 1em">
+        <van-col span="8">维修时间：</van-col>
         <van-col span="16"><span>{{rep.startTime}}</span></van-col>
       </van-row>
-      <van-row style="margin-top: 0.6rem">
-        <van-col span="6">设备名称：</van-col>
-        <van-col span="15" offset="2"><span>{{rep.equipment.name}}</span></van-col>
+      <van-row style="margin-top: 1em">
+        <van-col span="8">设备名称：</van-col>
+        <van-col span="13" offset="2"><span>{{rep.equipment.name}}</span></van-col>
       </van-row>
-      <van-row style="margin-top: 0.6rem">
-        <van-col span="6">物业名称：</van-col>
-        <van-col span="15" offset="2"><span>{{rep.equipment.wy.name}}</span></van-col>
+      <van-row style="margin-top: 1em" v-if="rep.wxg==null ? wxgname='未指派维修工' : wxgname=rep.wxg.name">
+        <van-col span="8">维修工：</van-col>
+        <van-col span="13" offset="2"><span>{{wxgname}}</span></van-col>
       </van-row>
-      <van-row style="margin-top: 0.6rem">
-        <van-col span="6">故障描述：</van-col>
-        <van-col span="16" class="showBack van-ellipsis"><span>{{rep.miaoshu}}卢卡斯昆仑山搭街坊老卡萨利十九分两款手机两款手机流口水就流口水就流口水上来看就是拉开来上课来上课流口水</span></van-col>
+      <van-row style="margin-top: 1em">
+        <van-col span="8">物业名称：</van-col>
+        <van-col span="13" offset="2"><span>{{rep.equipment.wy.name}}</span></van-col>
+      </van-row>
+      <van-row style="margin-top: 1em">
+        <van-col span="8">故障描述：</van-col>
+        <van-col span="16" class="showBack van-ellipsis"><span>{{rep.miaoshu}}</span></van-col>
+      </van-row>
+      <van-row style="margin-top: 1em">
+        <van-col offset="1">
+          <el-button type="warning" size="mini" plain>点击派送</el-button>
+        </van-col>
       </van-row>
     </div>
     <!--<div class="sendT-con" @click="sendRep(rep,index)" v-for="(rep,index) in RepairList">-->
@@ -58,7 +67,13 @@
         columns: [],
         confirmD:'',
         index:'',
-        RepairNum:''
+        RepairNum:'',
+        state:[
+          "维修中",
+          "维修工确认",
+          "派出维修工",
+          "故障",
+        ]
       }
     },
     methods:{
@@ -71,7 +86,6 @@
       getRepairList(){
         // 登录时，token被存在了localStorage里，现在直接调用它做请求头
         this.$http.post("/actionLog/selectAllActionLogByWBQYNameAndstate",{
-          "state":"4"
         },{
           headers: {
             'Auth-Token': JSON.parse(window.localStorage.getItem("token") || "[]").toString(),
@@ -84,6 +98,8 @@
         }).catch((error)=>{
           console.log(error);
         });
+      },
+      getwoker(){
         this.$http.post("/user/findWXGsByWBQYUsername",{},{
           headers: {
             'Auth-Token': JSON.parse(window.localStorage.getItem("token") || "[]").toString(),
@@ -108,14 +124,21 @@
         // this.fixerData[index].id  是当前确定技师的id。
         this.$http.post("/actionLog/paiChuWXG",{
           "actionLogId":this.ListId,
-          "wxgId":this.fixerData[this.index].id
+          "wxgId":this.fixerData[index].id
         },{
           headers: {
             'Auth-Token': JSON.parse(window.localStorage.getItem("token") || "[]").toString(),
             'Content-Type': 'application/json'
           }
         }).then((res)=>{
-          console.log("派出成功",res);
+          if(res.data.code){
+            this.$toast.success('派出成功');
+            console.log("派出成功",res);
+          }else {
+            this.$toast.fail('派出失败');
+
+          }
+
           this.getRepairList();
           this.show = false;
           console.log(this.index);
@@ -134,6 +157,7 @@
     },
     created(){
       this.getRepairList();
+      this.getwoker();
       for (let i = 0; i < this.RepairNum; i++) {
         this.show1[i] = false;
       }

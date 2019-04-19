@@ -1,46 +1,60 @@
 <template>
-  <div class="content">
-    <div style="margin-top:30px;padding:10px ;">
-      <div class="title">
-        <h2>一键报修详情页面</h2>
+  <div id="withRepair">
+    <van-row class="header" type="flex" justify="space-between" style="">
+      <van-col span="4">
+        <router-link to="/equipment/warranty">
+          <van-icon name="arrow-left" size="1em" color="white"/>
+        </router-link>
+      </van-col>
+      <van-col span="10" offset="2">一键报修详情</van-col>
+      <van-col span="6"></van-col>
+    </van-row>
+    <div class="content">
+      <div style="">
+        <el-form ref="form">
+          <el-form-item label="设备编号">
+            <el-input  v-model="code" readonly/>
+          </el-form-item>
+          <el-form-item label="设备名称">
+            <el-input  v-model="name" readonly/>
+          </el-form-item>
+          <el-form-item label="设备属性">
+            <!--用三目运算符data前面需要加this.-->
+            <el-input  v-model="this.isTeZhongSheBei ? '特种设备' : '普通设备'" readonly/>
+          </el-form-item>
+          <el-form-item label="设备类型">
+            <el-input  v-model="type" readonly/>
+          </el-form-item>
+          <el-form-item label="设备描述">
+            <el-input  v-model="miaoshu" readonly/>
+          </el-form-item>
+          <el-form-item label="规格型号">
+            <el-input  v-model="version" readonly/>
+          </el-form-item>
+          <el-form-item label="设备地址">
+            <el-input  v-model="address" readonly/>
+          </el-form-item>
+          <el-form-item label="归属部门">
+            <el-input  v-model="bumeng" readonly/>
+          </el-form-item>
+          <el-form-item label="维保单位">
+            <el-input  v-model="wbqyname" readonly/>
+          </el-form-item>
+          <el-form-item label="报修描述">
+            <el-input  v-model="miaoshuMistake"/>
+          </el-form-item>
+          <!--<el-form-item label="报修描述">
+            <el-input  v-model="miaoshu"/>
+          </el-form-item>-->
+          <el-form-item>
+            <el-button type="primary" size="small" class="btn-login" @click="add(data.id) ">一键报修</el-button>
+          </el-form-item>
+        </el-form>
       </div>
-      <el-form ref="form" label-width="80px">
-        <el-form-item label="设备编号">
-          <el-input  v-model="code" disabled="disabled"/>
-        </el-form-item>
-        <el-form-item label="设备名称">
-          <el-input  v-model="name" disabled="disabled"/>
-        </el-form-item>
-        <el-form-item label="设备属性">
-          <el-input  v-model="isTeZhongSheBei" disabled="disabled"/>
-        </el-form-item>
-        <el-form-item label="设备类型">
-          <el-input  v-model="type" disabled="disabled"/>
-        </el-form-item>
-        <el-form-item label="设备描述">
-          <el-input  v-model="miaoshu" disabled="disabled"/>
-        </el-form-item>
-        <el-form-item label="规格型号">
-          <el-input  v-model="version" disabled="disabled"/>
-        </el-form-item>
-        <el-form-item label="设备地址">
-          <el-input  v-model="address" disabled="disabled"/>
-        </el-form-item>
-        <el-form-item label="归属部门">
-          <el-input  v-model="bumeng" disabled="disabled"/>
-        </el-form-item>
-        <el-form-item label="维保单位">
-          <el-input  v-model="id" disabled="disabled"/>
-        </el-form-item>
-        <!--<el-form-item label="报修描述">
-          <el-input  v-model="miaoshu"/>
-        </el-form-item>-->
-        <el-form-item>
-          <el-button type="primary" size="small" class="btn-login" @click="add(data.id) ">一键报修</el-button>
-        </el-form-item>
-      </el-form>
     </div>
   </div>
+
+
 </template>
 
 <script>
@@ -48,7 +62,7 @@
     name: "edit",
     data() {
       return {
-        id:'',
+        wbqyname:'',
         data: [],
         code: '',
         name: '',
@@ -60,7 +74,8 @@
         bumeng: '',
         message: "设备信息数据",
         msg: false,
-        notnull: false
+        notnull: false,
+        miaoshuMistake:''
       };
     },
     created(){
@@ -68,7 +83,14 @@
     },
     methods: {
       add: function (equipmentId) {
-        if (equipmentId === "" || this.miaoshu === "") {
+        const loading = this.$loading({
+          lock: true,
+          text: 'Loading',
+          spinner: 'el-icon-loading',
+          background: 'rgba(0, 0, 0, 0.7)'
+        });
+        if (equipmentId === "") {
+          this.$toast("请返回重试");
           this.notnull = true;
         } else {
           console.log("the msg is ", equipmentId, this.miaoshu)
@@ -77,7 +99,7 @@
               "/actionLog/repairs",
               {
                 equipmentId: equipmentId,
-                /*miaoshu: this.miaoshu*/
+                miaoshu: this.miaoshuMistake
               },
               {
                 headers: {
@@ -86,25 +108,18 @@
                 }
               },
               {
-                emulateJSON: true,
+                // emulateJSON: true,
               }
             )
             .then(res => {
+              console.log("res:",res);
+              loading.close();
               if (res.data.code === "1") {
-                window.localStorage.setItem(
-                  "warranty",
-                  JSON.stringify(res.data.token)
-                );
-                this.data = res.data.data,
-                this.$router.push({
-                  path: "/index"
-                });
+                this.$toast.success('报修成功');
+                this.$router.go(-1);
               } else {
-                this.$router.push({
-                  path: "/"
-                });
-                this.msg = true;
-                console.log("this is fail", res);
+                this.$toast.fail('报修失败');
+
               }
             })
             .catch(err => {
@@ -136,12 +151,14 @@
           )
           .then(res => {
             if (res.data.code === "1") {
+              console.log("this is success", res);
+
               window.localStorage.setItem(
                 "element",
                 JSON.stringify(res.data.token)
               );
               this.data = res.data.data;
-              this.code = this.data.code;
+              this.code = this.data.id;
               this.name = this.data.name;
               this.isTeZhongSheBei = this.data.isTeZhongSheBei;
               this.type = this.data.type;
@@ -149,7 +166,7 @@
               this.version = this.data.version;
               this.address = this.data.address;
               this.bumeng = this.data.bumeng;
-              this.id = this.data.wbqy.id;
+              this.wbqyname = this.data.wbqy.name;
             } else {
               this.$router.push({
                 path: "/"

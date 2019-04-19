@@ -1,0 +1,89 @@
+/*每个界面的头部*/
+.header{
+  /*这里引用图片路径的思路是外部vue文件调用该css文件，但图片还是要从css文件出发去寻找的，用相对路径*/
+  /*background: url(../image/worker1.jpg)no-repeat 100%/ 100%;*/
+  background-color: gainsboro;
+  width: 100%;
+  height: 0.8rem;
+  color: black;
+  font-size: 0.4rem;
+  font-weight: bold;
+  line-height: 0.8rem;
+  text-align: center;
+  letter-spacing: 0.05rem;
+  position: relative;
+  top: 0;
+}
+.van-icon-arrow-left{
+  font-size: 0.3rem!important;
+}
+/*导航栏*/
+.van-tab{
+  font-size: 0.3rem;
+}
+.van-tab--active{
+  color: grey;
+}
+.van-tabs__line{
+  background-color: gainsboro;
+}
+/*单子样式*/
+.container-fluid{
+  width: 93%;
+  background-color: white;
+  display: inline-block;
+  text-align: center;
+  border-radius: 5px;
+  margin-top: 0.5em;
+  font-size: 0.28rem;
+  padding: 1em 0.5em;
+  color: black;
+  box-shadow: 3px 7px 10px #888888;
+}
+.container-fluid span{
+  color: chocolate;
+}
+.container-confirm{
+  width: 93%;
+  background-color: white;
+  display: inline-block;
+  text-align: center;
+  border-radius: 5px;
+  margin-top: 0.5em;
+  font-size: 0.28rem;
+  padding: 1em 0.5em;
+  color: black;
+  box-shadow: 3px 7px 10px #888888;
+}
+.van-cell{
+  font-size: 0.3rem;
+}
+.van-field .van-cell__title{
+  max-width: 7em;
+}
+.el-input__inner {
+  color: black!important;
+}
+.el-tabs__item.is-active{
+  color: grey;
+}
+.el-tabs--border-card>.el-tabs__header .el-tabs__item.is-active{
+  color: grey;
+}
+/*奇怪的切换动画，在此消掉*/
+.el-tabs--border-card>.el-tabs__header .el-tabs__item:not(.is-disabled):hover{
+  color: grey;
+}
+.el-button--primary{
+  background-color: white;
+  border-color: gainsboro;
+  color: grey;
+}
+a:link,a:visited{color:black;text-decoration:none;}
+/*a:hover{color:grey;}*/
+.van-dialog__message--has-title{
+  text-align: center;
+}
+.van-field__control:disabled{
+  color: black;
+}

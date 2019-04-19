@@ -1,45 +1,53 @@
 <template>
-  <div class="content">
+  <div id="repairWith">
+    <van-row type="flex" class="header" justify="space-between">
+      <van-col span="4">
+        <router-link to="/complaint/index">
+          <van-icon name="arrow-left" size="1em" color="white"/>
+        </router-link>
+      </van-col>
+      <van-col span="10" offset="2">维修工单详情</van-col>
+      <van-col span="6"></van-col>
+    </van-row>
+    <div class="content">
 
-    <!--repairMain-->
-    <div style="margin-top:30px;padding:10px ;">
-
-      <div class="title">
-        <h2>维修工单详情</h2>
+      <!--repairMain-->
+      <div style="">
+        <el-form ref="form">
+          <el-form-item label="设备名称">
+            <el-input v-model="equipment" disabled="disabled"/>
+          </el-form-item>
+          <el-form-item label="设备地址">
+            <el-input  v-model="address" disabled="disabled"/>
+          </el-form-item>
+          <el-form-item label="报修时间">
+            <el-input v-model="startTime" disabled="disabled"/>
+          </el-form-item>
+          <el-form-item label="派出时间">
+            <el-input v-model="paichuTime" disabled="disabled"/>
+          </el-form-item>
+          <el-form-item label="到达时间">
+            <el-input  v-model="arrivalTime" disabled="disabled"/>
+          </el-form-item>
+          <el-form-item label="结束时间">
+            <el-input  v-model="endTime" disabled="disabled"/>
+          </el-form-item>
+          <!--<el-form-item label="反馈内容">-->
+            <!--<el-input  v-model="fankui" disabled="disabled"/>-->
+          <!--</el-form-item>-->
+          <!--<el-form-item label="设备状态">-->
+            <!--<el-input  v-model="state" disabled="disabled"/>-->
+          <!--</el-form-item>-->
+          <el-form-item label="投诉内容">
+            <el-input v-model="fankui"/>
+          </el-form-item>
+          <el-form-item>
+            <el-button type="primary" class="input-group btn-login" @click="add(data.id)">提交投诉</el-button>
+          </el-form-item>
+        </el-form>
       </div>
-      <el-form ref="form" label-width="80px">
-        <el-form-item label="设备名称">
-          <el-input v-model="equipment" disabled="disabled"/>
-        </el-form-item>
-        <el-form-item label="设备地址">
-          <el-input  v-model="address" disabled="disabled"/>
-        </el-form-item>
-        <el-form-item label="报修时间">
-          <el-input v-model="startTime" disabled="disabled"/>
-        </el-form-item>
-        <el-form-item label="派出时间">
-          <el-input v-model="paichuTime" disabled="disabled"/>
-        </el-form-item>
-        <el-form-item label="到达时间">
-          <el-input  v-model="arrivalTime" disabled="disabled"/>
-        </el-form-item>
-        <el-form-item label="结束时间">
-          <el-input  v-model="endTime" disabled="disabled"/>
-        </el-form-item>
-        <el-form-item label="反馈内容">
-          <el-input  v-model="fankui" disabled="disabled"/>
-        </el-form-item>
-        <el-form-item label="设备状态">
-          <el-input  v-model="state" disabled="disabled"/>
-        </el-form-item>
-        <el-form-item label="投诉内容">
-          <el-input v-model="fankui"/>
-        </el-form-item>
-        <el-form-item>
-          <el-button type="primary" class="input-group btn-login" @click="add(data.id)">提交投诉</el-button>
-        </el-form-item>
-      </el-form>
     </div>
+
   </div>
 </template>
 
@@ -70,6 +78,12 @@
     },
     methods: {
       select: function () {
+        const loading = this.$loading({
+          lock: true,
+          text: 'Loading',
+          spinner: 'el-icon-loading',
+          background: 'rgba(0, 0, 0, 0.7)'
+        });
         this.repairId = this.$route.params.repairId;
         this.$http
           .post(
@@ -87,6 +101,8 @@
             }
           )
           .then(res => {
+            loading.close();
+            console.log("详情",res);
             if (res.data.code === "1") {
               window.localStorage.setItem(
                 "repair",
@@ -119,9 +135,18 @@
           });
       },
       add: function (id) {
+
         if (this.fankui === "") {
+          this.$toast("投诉内容为空");
           this.notnull = true;
+
         } else {
+          const loading = this.$loading({
+            lock: true,
+            text: 'Loading',
+            spinner: 'el-icon-loading',
+            background: 'rgba(0, 0, 0, 0.7)'
+          });
           this.$http
             .post(
               "/actionLog/fanKui",
@@ -141,7 +166,10 @@
               }
             )
             .then(res => {
+              loading.close();
+              console.log("提交投诉",res);
               if (res.data.code === "1") {
+                this.$toast.success("投诉成功")
                 window.localStorage.setItem(
                   "fanKui",
                   JSON.stringify(res.data.token)
@@ -151,6 +179,7 @@
                 });
 
               } else {
+                this.$toast.fail("提交失败")
                 this.$router.push({
                   path: "/"
                 });

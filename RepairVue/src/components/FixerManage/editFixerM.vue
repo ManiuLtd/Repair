@@ -1,6 +1,6 @@
 <template>
   <div id="editFixerM">
-    <van-row type="flex" justify="space-between" style="height: 67px;background-color: darkgoldenrod;color: whitesmoke;font-size: 20px;font-weight: bold;line-height: 67px;letter-spacing:4px;">
+    <van-row type="flex" class="header" justify="space-between">
       <van-col span="4">
         <router-link to="/fixerManage/editFixerMessage">
           <van-icon name="arrow-left" size="1em" color="white"/>
@@ -9,7 +9,7 @@
       <van-col span="8" offset="2">{{fixerName}}</van-col>
       <van-col span="6"></van-col>
     </van-row>
-    <van-cell-group style="padding-top: 1rem">
+    <van-cell-group style="">
       <van-field
         clearable
         v-model="fixerId"
@@ -19,7 +19,6 @@
       <van-field
         clearable
         v-model="fixerUsername"
-        disabled
         label="账号："
       />
       <van-field
@@ -43,13 +42,7 @@
       />
 
     </van-cell-group>
-    <van-button size="normal" type="default" style="margin-left: -20px" @click="submit">修改</van-button>
-    <van-popup v-model="show">
-      <div class="showMask" style="width: 25rem;height:13rem;">
-        <p style="line-height: 86px;margin-left:20px;font-size: 20px;font-weight: bold;">修改成功！</p>
-        <button style="background-color: #4CAF50;border: none;color: white;padding: 6px 21px;text-align: center;text-decoration: none;display: inline-block;font-size: 13px;" @click="show = false">确定</button>
-      </div>
-    </van-popup>
+    <van-button size="normal" type="default" style="margin-left: -0.2rem;margin-top: 1em" @click="submit">修改</van-button>
 
   </div>
 </template>
@@ -69,8 +62,15 @@
     },
     methods:{
       submit(){
+        const loading = this.$loading({
+          lock: true,
+          text: 'Loading',
+          spinner: 'el-icon-loading',
+          background: 'rgba(0, 0, 0, 0.7)'
+        });
         // 登录时，token被存在了localStorage里，现在直接调用它做请求头
         this.$http.post("/user/wbqyupdateWXG",{
+          "id":this.fixerId,
           "username":this.fixerUsername,
           "password":this.fixerPassword,
           "name":this.fixerName,
@@ -83,8 +83,16 @@
             'Content-Type': 'application/json'
           }
         }).then((res)=>{
-          console.log("111",res);
-          this.show = true;
+          loading.close();
+          if(res.data.code == 1){
+            this.$toast.success('修改成功');
+            console.log("111",res);
+            this.show = true;
+          }else{
+            this.$toast(res.data.msg);
+
+          }
+
         }).catch((error)=>{
           console.log(error);
         })
@@ -110,8 +118,8 @@
 
   }
 </script>
-<style scoped>
+<style>
   .van-field{
-    margin-top: 20px;
+    margin-top: 0.2rem;
   }
 </style>

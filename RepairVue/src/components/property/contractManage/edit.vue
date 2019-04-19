@@ -1,39 +1,53 @@
 <!--合同编辑-->
 <template>
-  <div class="content">
-    <!--equipmentAdd-->
-    <div style="margin-top:30px;padding:10px ;">
-      <div class="title">
-        <h2>合同编辑</h2>
+  <div id="editWy">
+    <van-row class="header" type="flex" justify="space-between" style="">
+    <van-col span="4">
+    <router-link to="/contract/index">
+    <van-icon name="arrow-left" size="1em" color="white"/>
+    </router-link>
+    </van-col>
+    <van-col span="8" offset="2">合同编辑</van-col>
+    <van-col span="6"></van-col>
+    </van-row>
+    <div class="content">
+      <!--equipmentAdd-->
+      <div style="margin-top:0.3rem;">
+        <el-form ref="form">
+          <el-form-item label="维保企业">
+            <el-input  v-model="wbqy" readonly/>
+          </el-form-item>
+          <el-form-item label="合同内容">
+            <el-input  v-model="content"/>
+          </el-form-item>
+          <el-form-item label="开始日期">
+            <el-input  v-model="startDate" type="date"/>
+          </el-form-item>
+          <el-form-item label="结束日期">
+            <el-input  v-model="endDate" type="date"/>
+          </el-form-item>
+          <el-form-item label="负责人">
+            <el-input  v-model="fuzeren"/>
+          </el-form-item>
+          <!--<el-form-item label="付款方式">-->
+            <!--<el-input  v-model="fukuanfangshi"/>-->
+          <!--</el-form-item>-->
+          <el-form-item label="付款方式">
+            <el-input class="input-group" v-model="fukuanfangshi" placeholder="付款方式">
+            </el-input>
+          </el-form-item>
+
+          <el-form-item label="付款时间">
+            <el-input  v-model="fukuanshijian" type="date"/>
+          </el-form-item>
+          <el-form-item style="width: 80%">
+            <el-button type="warning" class="input-group btn-login" size="medium" @click="edit(data.id)">编辑合同</el-button>
+          </el-form-item>
+        </el-form>
       </div>
-      <el-form ref="form" label-width="80px">
-        <el-form-item label="维保企业">
-          <el-input  v-model="wbqy"/>
-        </el-form-item>
-        <el-form-item label="合同内容">
-          <el-input  v-model="content"/>
-        </el-form-item>
-        <el-form-item label="开始日期">
-          <el-input  v-model="startDate" type="date"/>
-        </el-form-item>
-        <el-form-item label="结束日期">
-          <el-input  v-model="endDate" type="date"/>
-        </el-form-item>
-        <el-form-item label="负责人">
-          <el-input  v-model="fuzeren"/>
-        </el-form-item>
-        <el-form-item label="付款方式">
-          <el-input  v-model="fukuanfangshi"/>
-        </el-form-item>
-        <el-form-item label="付款时间">
-          <el-input  v-model="fukuanshijian" type="date"/>
-        </el-form-item>
-        <el-form-item>
-          <el-button type="primary" class="input-group btn-login" @click="edit(data.id)">编辑设备</el-button>
-        </el-form-item>
-      </el-form>
     </div>
   </div>
+
 </template>
 
 <script>
@@ -52,7 +66,9 @@
         fukuanshijian: '',
         message: "合同信息数据",
         msg: false,
-        notnull: false
+        notnull: false,
+        wbqyuser:''
+
       };
     },
     created(){
@@ -77,13 +93,15 @@
             }
           )
           .then(res => {
+            console.log("合同",res);
             if (res.data.code === "1") {
               window.localStorage.setItem(
                 "contract",
                 JSON.stringify(res.data.token)
               );
               this.data = res.data.data;
-              this.wbqy = this.data.wbqy.username;
+              this.wbqy = this.data.wbqy.name;
+              this.wbqyuser = this.data.wbqy.username;
               this.content = this.data.content;
               this.startDate = this.data.startDate;
               this.endDate = this.data.endDate;
@@ -108,6 +126,13 @@
           });
       },
       edit: function (contractID) {
+        // 网络请求延迟界面
+        const loading = this.$loading({
+          lock: true,
+          text: 'Loading',
+          spinner: 'el-icon-loading',
+          background: 'rgba(0, 0, 0, 0.7)'
+        });
         if (contractID === "") {
           this.notnull = true;
         } else {
@@ -116,7 +141,7 @@
               "/user/addContract",
               {
                 id:contractID,
-                wbqy: this.wbqy,
+                wbqy: this.wbqyuser,
                 content: this.content,
                 startDate: new Date(this.startDate).getTime(),
                 endDate: new Date(this.endDate).getTime(),
@@ -136,7 +161,10 @@
               }
             )
             .then(res => {
+              console.log("编辑成功",res);
+              loading.close();
               if (res.data.code === "1") {
+                this.$toast.success('编辑成功');
                 window.localStorage.setItem(
                   "contract",
                   JSON.stringify(res.data.token)
@@ -144,6 +172,7 @@
                 this.$router.replace("/contractBlack");
 
               } else {
+                this.$toast.fail('编辑失败');
                 this.$router.push({
                   path: "/"
                 });
@@ -177,6 +206,6 @@
     margin-top: 2%;
   }
   .content {
-    margin: 5%;
+    margin: 0 5%;
   }
 </style>

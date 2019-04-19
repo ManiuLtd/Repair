@@ -1,16 +1,34 @@
 <template>
-  <div class="qrscanner">
-    <div class="qrscanner-area">
-      <div class="area"></div>
+  <div id="saoma" style="">
+    <van-row type="flex" justify="space-between" style="height: 3em;font-size: 0.3rem;line-height: 3em;margin-top: 1em">
+      <van-col span="4">
+        <router-link to="/RepairListFixer/repairListFixer">
+          <van-icon name="arrow-left" size="2em" color="darkgoldenrod" style="font-weight: bolder;"/>
+        </router-link>
+      </van-col>
+    </van-row>
+    <div class="qrscanner">
+      <div class="qrscanner-area">
+        <van-row type="flex" justify="center" style="margin-top: 30%">
+          <van-col span="4"></van-col>
+          <van-col span="15">
+            <div class="area">
+              <div class="through-line"></div>
+            </div>
+          </van-col>
+          <van-col span="4"></van-col>
+        </van-row>
+
+      </div>
+
     </div>
 
-    <div class="through-line"></div>
   </div>
-  <div class="arrive" style="display: none;height: 100vh;background-color: white">
-    <van-row type="flex" justify="center" style="">
-      <van-col span="6" style="font-size: 20px">签到成功！</van-col>
-    </van-row>
-  </div>
+  <!--<div class="arrive" style="display: none;height: 100vh;background-color: white">-->
+  <!--<van-row type="flex" justify="center" style="">-->
+  <!--<van-col span="6" style="font-size: 20px">签到成功！</van-col>-->
+  <!--</van-row>-->
+  <!--</div>-->
 
 </template>
 <script>
@@ -68,6 +86,12 @@
       // },
       // 发起网络请求
       postData(v) {
+        const loading = this.$loading({
+          lock: true,
+          text: 'Loading',
+          spinner: 'el-icon-loading',
+          background: 'rgba(0, 0, 0, 0.7)'
+        });
         // 登录时，token被存在了localStorage里，现在直接调用它做请求头
         // console.log(JSON.parse(window.localStorage.getItem("token") || "[]").toString());
         this.$http.post("/actionLog/queRenDaoDa", {
@@ -79,13 +103,23 @@
             'Content-Type': 'application/json'
           }
         }).then((res) => {
-          console.log("签到", res);
+          loading.close();
+          if (res.data.code == 1) {
+            this.$toast.success('签到成功');
+            console.log("签到", res.data.code);
+          } else {
+            this.$toast.fail('签到失败');
+          }
+
           // alert("签到成功！");
-          QRScanner.destroy(function(status){
-            console.log(status);
-          });
+          // 扫码进程导致其他界面变成扫描预览，取消扫描不奏效，得用毁坏扫码
+          // QRScanner.destroy(function (status) {
+          //   console.log(status);
+          // });
+          // QRScanner.cancelScan();
           //返回上一页
-          this.$router.go(-2);
+          // this.$router.go(-2);
+          this.$router.replace({name: 'repairListFixer'});
         }).catch((error) => {
           console.log(error);
         })
@@ -113,7 +147,16 @@
         this.frontCamera = !this.frontCamera;
       }
     },
+    // 销毁实例，有了它，其他页面被污染的情况才取消的
+    destroyed() {
 
+      QRScanner.destroy(function (status) {
+        // alert('实例已销毁');
+        $("html").css("background", "white");
+        console.log("实例", status);
+
+      });
+    },
     // watch: {
     //   data: function (val) {
     //     this.postData(val);
@@ -159,9 +202,9 @@
         if (err) {
           // QRScanner.destroy();
           console.error(err._message);
-          alert("没扫到",err._message);
+          alert("没扫到", err._message);
           // that.$router.push({path:"/RepairListFixer/repairListFixer"});
-        }else {
+        } else {
 
           // QRScanner.hide(function(status){
           //   alert("隐藏");
@@ -196,52 +239,57 @@
     background-size: contain;
     /*border: 5px solid whitesmoke;*/
   }
+
   .area {
-    background: linear-gradient(#ae0000, #ae0000) left top,
-    linear-gradient(#ae0000, #ae0000) left top,
-    linear-gradient(#ae0000, #ae0000) right top,
-    linear-gradient(#ae0000, #ae0000) right top,
-    linear-gradient(#ae0000, #ae0000) right bottom,
-    linear-gradient(#ae0000, #ae0000) right bottom,
-    linear-gradient(#ae0000, #ae0000) left bottom,
-    linear-gradient(#ae0000, #ae0000) left bottom;
+    background: linear-gradient(darkgoldenrod, darkgoldenrod) left top,
+    linear-gradient(darkgoldenrod, darkgoldenrod) left top,
+    linear-gradient(darkgoldenrod, darkgoldenrod) right top,
+    linear-gradient(darkgoldenrod, darkgoldenrod) right top,
+    linear-gradient(darkgoldenrod, darkgoldenrod) right bottom,
+    linear-gradient(darkgoldenrod, darkgoldenrod) right bottom,
+    linear-gradient(darkgoldenrod, darkgoldenrod) left bottom,
+    linear-gradient(darkgoldenrod, darkgoldenrod) left bottom;
     background-repeat: no-repeat;
-    background-size: 2px 20px, 20px 2px;
-    height: 18rem;
-    width: 21rem;
-    position: absolute;
-    left: 20%;
-    top: 20%;
+    background-size: 10px 20px, 20px 10px;
+    height: 3.6rem;
+    width: 100%;
+    position: relative;
+    /*left: 21.5%;*/
+    /*top: 30%;*/
   }
+
   .through-line {
-    left: 20%;
-    width: 60%;
+    /*left: 16.5%;*/
+    width: 95%;
     height: 2px;
-    background: red;
+    background: darkgoldenrod;
     position: absolute;
-    animation: myfirst 5s linear infinite alternate;
+    left: 0;
+    right: 0;
+    margin: 0 auto;
+    animation: myfirst 2s linear infinite alternate;
   }
 
   @keyframes myfirst {
     0% {
       /*background: green;*/
-      top: 13rem;
+      top: 15%;
     }
-    25% {
-      /*background: yellow;*/
-      top: 17rem;
-    }
+    /*25% {*/
+    /*!*background: yellow;*!*/
+    /*top: 25%;*/
+    /*}*/
     50% {
       /*background: blue;*/
-      top: 21rem;
+      top: 50%;
     }
-    75% {
-      /*background: green;*/
-      top: 25rem;
-    }
+    /*75% {*/
+    /*!*background: green;*!*/
+    /*top: 75%;*/
+    /*}*/
     100% {
       /*background: red;*/
-      top: 29rem;
+      top: 85%;
     }
   }
 
